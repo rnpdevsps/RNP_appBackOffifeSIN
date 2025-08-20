@@ -147,9 +147,10 @@ class ApiLogDataTable extends DataTable
             Column::make('ip_address')->title(__('ip_address')),
             Column::make('api_key')->title(__('ApiKey')),
             Column::make('user_agent')->title(__('user_agent')),
-            Column::make('message')->title(__('message')),
+            Column::make('method')->title(__('method')),
             Column::make('created_at')->title(__('created_at')),
-            Column::make('status')->title(__('Status')),
+            Column::make('status_code')->title(__('status_code')),
+            Column::make('execution_time')->title(__('execution_time')),
         ];
     }
 

@@ -16,12 +16,12 @@ class WSKioskosController extends Controller
     {
         $parametros = "
             <NumeroIdentidad>".$id."</NumeroIdentidad>
-            <CodigoInstitucion>" . env('CodigoInstitucion_Kiosko') . "</CodigoInstitucion>
-            <CodigoSeguridad>" . env('CodigoSeguridad_Kiosko') . "</CodigoSeguridad>
-            <UsuarioInstitucion>" . env('UsuarioInstitucion_Kiosko') . "</UsuarioInstitucion>
+            <CodigoInstitucion>" . env('CodigoInstitucion') . "</CodigoInstitucion>
+            <CodigoSeguridad>" . env('CodigoSeguridad') . "</CodigoSeguridad>
+            <UsuarioInstitucion>" . env('UsuarioInstitucion') . "</UsuarioInstitucion>
         ";
         
-        $data = [$this->realizarSolicitudSOAP('lst_Defunciones', $parametros)];
+        $data = [$this->realizarSolicitudSOAP('Lst_Defunciones', $parametros)];
         $message = ['success' => [__('Defunciones')]];
         return ApiHelpers::success($data, $message);
     }
@@ -30,12 +30,12 @@ class WSKioskosController extends Controller
     {
         $parametros = "
             <NumeroIdentidad>".$id."</NumeroIdentidad>
-            <CodigoInstitucion>" . env('CodigoInstitucion_Kiosko') . "</CodigoInstitucion>
-            <CodigoSeguridad>" . env('CodigoSeguridad_Kiosko') . "</CodigoSeguridad>
-            <UsuarioInstitucion>" . env('UsuarioInstitucion_Kiosko') . "</UsuarioInstitucion>
+            <CodigoInstitucion>" . env('CodigoInstitucion') . "</CodigoInstitucion>
+            <CodigoSeguridad>" . env('CodigoSeguridad') . "</CodigoSeguridad>
+            <UsuarioInstitucion>" . env('UsuarioInstitucion') . "</UsuarioInstitucion>
         ";
         
-        $data = [$this->realizarSolicitudSOAP('lst_Matrimonios', $parametros)];
+        $data = [$this->realizarSolicitudSOAP('Lst_Matrimonios', $parametros)];
         $message = ['success' => [__('Matrimonios')]];
         return ApiHelpers::success($data, $message);
     }
@@ -45,9 +45,9 @@ class WSKioskosController extends Controller
     {
         $parametros = "
             <identidad>".$id."</identidad>
-            <CodigoInstitucion>" . env('CodigoInstitucion_Kiosko') . "</CodigoInstitucion>
-            <CodigoSeguridad>" . env('CodigoSeguridad_Kiosko') . "</CodigoSeguridad>
-            <UsuarioInstitucion>" . env('UsuarioInstitucion_Kiosko') . "</UsuarioInstitucion>
+            <CodigoInstitucion>" . env('CodigoInstitucion') . "</CodigoInstitucion>
+            <CodigoSeguridad>" . env('CodigoSeguridad') . "</CodigoSeguridad>
+            <UsuarioInstitucion>" . env('UsuarioInstitucion') . "</UsuarioInstitucion>
         ";
         
         $data = [$this->realizarSolicitudSOAP('Qry_ArbolGenealogico', $parametros)];
@@ -68,9 +68,9 @@ class WSKioskosController extends Controller
         $parametros = "
             <NumeroIdentidad>".$request->NumeroIdentidad."</NumeroIdentidad>
             <imgFoto>".$request->imgFoto."</imgFoto>
-            <CodigoInstitucion>" . env('CodigoInstitucion_Kiosko') . "</CodigoInstitucion>
-            <CodigoSeguridad>" . env('CodigoSeguridad_Kiosko') . "</CodigoSeguridad>
-            <UsuarioInstitucion>" . env('UsuarioInstitucion_Kiosko') . "</UsuarioInstitucion>
+            <CodigoInstitucion>" . env('CodigoInstitucion') . "</CodigoInstitucion>
+            <CodigoSeguridad>" . env('CodigoSeguridad') . "</CodigoSeguridad>
+            <UsuarioInstitucion>" . env('UsuarioInstitucion') . "</UsuarioInstitucion>
         ";
         
         $data = [$this->realizarSolicitudSOAP('Qry_ComparaFotoInscrito', $parametros)];
@@ -92,9 +92,9 @@ class WSKioskosController extends Controller
             <NumeroIdentidad>".$request->numeroIdentidad."</NumeroIdentidad>
             <imgHuella>".$request->imgHuella."</imgHuella>
             <Digito>0</Digito>
-            <CodigoInstitucion>" . env('CodigoInstitucion_Kiosko') . "</CodigoInstitucion>
-            <CodigoSeguridad>" . env('CodigoSeguridad_Kiosko') . "</CodigoSeguridad>
-            <UsuarioInstitucion>" . env('UsuarioInstitucion_Kiosko') . "</UsuarioInstitucion>
+            <CodigoInstitucion>" . env('CodigoInstitucion') . "</CodigoInstitucion>
+            <CodigoSeguridad>" . env('CodigoSeguridad') . "</CodigoSeguridad>
+            <UsuarioInstitucion>" . env('UsuarioInstitucion') . "</UsuarioInstitucion>
         ";
         
         $data = [$this->realizarSolicitudSOAP('Qry_ComparaHuellaInscrito', $parametros)];
@@ -106,9 +106,9 @@ class WSKioskosController extends Controller
     public function ListaKioskos()
     {
         $parametros = "
-            <CodigoInstitucion>" . env('CodigoInstitucion_Kiosko') . "</CodigoInstitucion>
-            <CodigoSeguridad>" . env('CodigoSeguridad_Kiosko') . "</CodigoSeguridad>
-            <UsuarioInstitucion>" . env('UsuarioInstitucion_Kiosko') . "</UsuarioInstitucion>
+            <CodigoInstitucion>" . env('CodigoInstitucion') . "</CodigoInstitucion>
+            <CodigoSeguridad>" . env('CodigoSeguridad') . "</CodigoSeguridad>
+            <UsuarioInstitucion>" . env('UsuarioInstitucion') . "</UsuarioInstitucion>
         ";
         
         $data = [$this->realizarSolicitudSOAP('lst_Kioscos', $parametros)];
@@ -121,12 +121,12 @@ class WSKioskosController extends Controller
     {
         $parametros = "
             <CodigoKiosco>".$id."</CodigoKiosco>
-            <CodigoInstitucion>" . env('CodigoInstitucion_Kiosko') . "</CodigoInstitucion>
-            <CodigoSeguridad>" . env('CodigoSeguridad_Kiosko') . "</CodigoSeguridad>
-            <UsuarioInstitucion>" . env('UsuarioInstitucion_Kiosko') . "</UsuarioInstitucion>
+            <CodigoInstitucion>" . env('CodigoInstitucion') . "</CodigoInstitucion>
+            <CodigoSeguridad>" . env('CodigoSeguridad') . "</CodigoSeguridad>
+            <UsuarioInstitucion>" . env('UsuarioInstitucion') . "</UsuarioInstitucion>
         ";
         
-        $data = [$this->realizarSolicitudSOAP('lst_LugaresEntregaDNI', $parametros)];
+        $data = [$this->realizarSolicitudSOAP('Lst_LugaresEntregaDNI', $parametros)];
         $message = ['success' => [__('Lugares  de Entrega DNI')]];
         return ApiHelpers::success($data, $message);
     }
@@ -135,12 +135,12 @@ class WSKioskosController extends Controller
     {
         $parametros = "
             <identidad>".$id."</identidad>
-            <CodigoInstitucion>" . env('CodigoInstitucion_Kiosko') . "</CodigoInstitucion>
-            <CodigoSeguridad>" . env('CodigoSeguridad_Kiosko') . "</CodigoSeguridad>
-            <UsuarioInstitucion>" . env('UsuarioInstitucion_Kiosko') . "</UsuarioInstitucion>
+            <CodigoInstitucion>" . env('CodigoInstitucion') . "</CodigoInstitucion>
+            <CodigoSeguridad>" . env('CodigoSeguridad') . "</CodigoSeguridad>
+            <UsuarioInstitucion>" . env('UsuarioInstitucion') . "</UsuarioInstitucion>
         ";
         
-        $data = [$this->realizarSolicitudSOAP('RecuperarUltimoDNI', $parametros)];
+        $data = [$this->realizarSolicitudSOAP('Qry_RecuperarUltimoDNI', $parametros)];
         $message = ['success' => [__('Ultimo DNI')]];
         return ApiHelpers::success($data, $message);
     }
@@ -178,9 +178,9 @@ curl_setopt_array($curl, array(
             <EsTerceraEdad>'.$request->esTerceraEdad.'</EsTerceraEdad>
             <TipoCertificacion>'.$request->tipoCertificacion.'</TipoCertificacion>
             <MontoTotal>'.$request->montoTotal.'</MontoTotal>
-            <CodigoInstitucion>'.env('CodigoInstitucion_Kiosko').'</CodigoInstitucion>
-            <CodigoSeguridad>'.env('CodigoSeguridad_Kiosko').'</CodigoSeguridad>
-            <UsuarioInstitucion>'.env('UsuarioInstitucion_Kiosko').'</UsuarioInstitucion>
+            <CodigoInstitucion>'.env('CodigoInstitucion').'</CodigoInstitucion>
+            <CodigoSeguridad>'.env('CodigoSeguridad').'</CodigoSeguridad>
+            <UsuarioInstitucion>'.env('UsuarioInstitucion').'</UsuarioInstitucion>
         </crearReciboTGR1>
     </soap:Body>
 </soap:Envelope>',
@@ -233,14 +233,13 @@ $data = ['recibo' => $array];
         }
 
         $parametros = "
-            <identidad>".$request->numeroIdentidad."</identidad>
             <NumeroRecibo>".$request->numeroRecibo."</NumeroRecibo>
-            <CodigoInstitucion>" . env('CodigoInstitucion_Kiosko') . "</CodigoInstitucion>
-            <CodigoSeguridad>" . env('CodigoSeguridad_Kiosko') . "</CodigoSeguridad>
-            <UsuarioInstitucion>" . env('UsuarioInstitucion_Kiosko') . "</UsuarioInstitucion>
+            <CodigoInstitucion>" . env('CodigoInstitucion') . "</CodigoInstitucion>
+            <CodigoSeguridad>" . env('CodigoSeguridad') . "</CodigoSeguridad>
+            <UsuarioInstitucion>" . env('UsuarioInstitucion') . "</UsuarioInstitucion>
         ";
         
-        $data = [$this->realizarSolicitudSOAP('RecuperarReciboTGR1', $parametros)];
+        $data = [$this->realizarSolicitudSOAP('Qry_RecuperarReciboTGR1', $parametros)];
         $message = ['success' => [__('Recuperar Recibo TGR')]];
         return ApiHelpers::success($data, $message);
     }
@@ -261,9 +260,9 @@ $data = ['recibo' => $array];
             <NumeroIdentidad>".$request->numeroIdentidad."</NumeroIdentidad>
             <IdentidadConsultante>".$request->identidadConsultante."</IdentidadConsultante>
             <NumeroRecibo>".$request->numeroRecibo."</NumeroRecibo>
-            <CodigoInstitucion>" . env('CodigoInstitucion_Kiosko') . "</CodigoInstitucion>
-            <CodigoSeguridad>" . env('CodigoSeguridad_Kiosko') . "</CodigoSeguridad>
-            <UsuarioInstitucion>" . env('UsuarioInstitucion_Kiosko') . "</UsuarioInstitucion>
+            <CodigoInstitucion>" . env('CodigoInstitucion') . "</CodigoInstitucion>
+            <CodigoSeguridad>" . env('CodigoSeguridad') . "</CodigoSeguridad>
+            <UsuarioInstitucion>" . env('UsuarioInstitucion') . "</UsuarioInstitucion>
         ";
         
         $data = [$this->realizarSolicitudSOAP('Qry_CertificadoMatrimonio', $parametros)];
@@ -288,9 +287,9 @@ $data = ['recibo' => $array];
             <NumeroIdentidad>".$request->numeroIdentidad."</NumeroIdentidad>
             <IdentidadConsultante>".$request->identidadConsultante."</IdentidadConsultante>
             <NumeroRecibo>".$request->numeroRecibo."</NumeroRecibo>
-            <CodigoInstitucion>" . env('CodigoInstitucion_Kiosko') . "</CodigoInstitucion>
-            <CodigoSeguridad>" . env('CodigoSeguridad_Kiosko') . "</CodigoSeguridad>
-            <UsuarioInstitucion>" . env('UsuarioInstitucion_Kiosko') . "</UsuarioInstitucion>
+            <CodigoInstitucion>" . env('CodigoInstitucion') . "</CodigoInstitucion>
+            <CodigoSeguridad>" . env('CodigoSeguridad') . "</CodigoSeguridad>
+            <UsuarioInstitucion>" . env('UsuarioInstitucion') . "</UsuarioInstitucion>
         ";
         
         $data = [$this->realizarSolicitudSOAP('Qry_CertificadoDefuncion', $parametros)];
@@ -318,9 +317,9 @@ $data = ['recibo' => $array];
             <TipoCertificado>".$request->tipoCertificacion."</TipoCertificado>
             <CodigoDepartamentoEmision>".$request->codigoDepartamentoEmision."</CodigoDepartamentoEmision>
             <CodigoMunicipioEmision>".$request->codigoMunicipioEmision."</CodigoMunicipioEmision>
-            <CodigoInstitucion>" . env('CodigoInstitucion_Kiosko') . "</CodigoInstitucion>
-            <CodigoSeguridad>" . env('CodigoSeguridad_Kiosko') . "</CodigoSeguridad>
-            <UsuarioInstitucion>" . env('UsuarioInstitucion_Kiosko') . "</UsuarioInstitucion>
+            <CodigoInstitucion>" . env('CodigoInstitucion') . "</CodigoInstitucion>
+            <CodigoSeguridad>" . env('CodigoSeguridad') . "</CodigoSeguridad>
+            <UsuarioInstitucion>" . env('UsuarioInstitucion') . "</UsuarioInstitucion>
         ";
         
         $data = [$this->realizarSolicitudSOAP('ValidarReciboTGR1ConOrigen', $parametros)];
@@ -349,9 +348,9 @@ $data = ['recibo' => $array];
             <NumeroRecibo>".$request->NumeroRecibo."</NumeroRecibo>
             <CodigoUbicacionEntrega>".$request->CodigoUbicacionEntrega."</CodigoUbicacionEntrega>
             <NumeroReferencia>".$request->NumeroReferencia."</NumeroReferencia>
-            <CodigoInstitucion>" . env('CodigoInstitucion_Kiosko') . "</CodigoInstitucion>
-            <CodigoSeguridad>" . env('CodigoSeguridad_Kiosko') . "</CodigoSeguridad>
-            <UsuarioInstitucion>" . env('UsuarioInstitucion_Kiosko') . "</UsuarioInstitucion>
+            <CodigoInstitucion>" . env('CodigoInstitucion') . "</CodigoInstitucion>
+            <CodigoSeguridad>" . env('CodigoSeguridad') . "</CodigoSeguridad>
+            <UsuarioInstitucion>" . env('UsuarioInstitucion') . "</UsuarioInstitucion>
         ";
         
         $data = [$this->realizarSolicitudSOAP('Qry_ComprobanteReposicionDNI', $parametros)];
@@ -373,9 +372,9 @@ $data = ['recibo' => $array];
         $parametros = "
             <NumeroIdentidad>".$request->NumeroIdentidad."</NumeroIdentidad>
             <CodigoGUID>".$request->CodigoGUID."</CodigoGUID>
-            <CodigoInstitucion>" . env('CodigoInstitucion_Kiosko') . "</CodigoInstitucion>
-            <CodigoSeguridad>" . env('CodigoSeguridad_Kiosko') . "</CodigoSeguridad>
-            <UsuarioInstitucion>" . env('UsuarioInstitucion_Kiosko') . "</UsuarioInstitucion>
+            <CodigoInstitucion>" . env('CodigoInstitucion') . "</CodigoInstitucion>
+            <CodigoSeguridad>" . env('CodigoSeguridad') . "</CodigoSeguridad>
+            <UsuarioInstitucion>" . env('UsuarioInstitucion') . "</UsuarioInstitucion>
         ";
         
         $data = [$this->realizarSolicitudSOAP('Qry_ReimpresionReposicionDNI', $parametros)];

@@ -27,7 +27,7 @@
                         <span class="dash-mtext custom-weight">{{ __('Dashboard') }}</span></a>
                 </li>
 
-                @canany(['manage-user', 'manage-role'])
+                @canany(['manage-user', 'manage-role']) 
                     <li
                         class="dash-item dash-hasmenu {{ request()->is('users*') || request()->is('roles*') ? 'active dash-trigger' : 'collapsed' }}">
                         <a href="#!" class="dash-link"><span class="dash-micon"><i
@@ -104,6 +104,18 @@
                                 class="dash-mtext">{{ __('Account Setting') }}</span><span class="dash-arrow"><i
                                     data-feather="chevron-right"></i></span></a>
                         <ul class="dash-submenu">
+                            @can('manage-apikey')
+                                <li class="dash-item {{ request()->is('apikey*') ? 'active' : '' }}">
+                                    <a class="dash-link"
+                                        href="{{ route('apikey.index') }}">{{ __('Apikey') }}</a>
+                                </li>
+                            @endcan
+                             @can('manage-module')
+                                <li class="dash-item {{ request()->is('module*') ? 'active' : '' }}">
+                                    <a class="dash-link"
+                                        href="{{ route('module.index') }}">{{ __('Modulos') }}</a>
+                                </li>
+                            @endcan
                             @can('manage-mailtemplate')
                                 <li class="dash-item {{ request()->is('mailtemplate*') ? 'active' : '' }}">
                                     <a class="dash-link"

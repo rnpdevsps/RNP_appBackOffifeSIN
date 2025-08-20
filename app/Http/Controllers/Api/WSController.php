@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use App\Http\Helpers\Api\Helpers as ApiHelpers;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Nnapren;
+use App\Models\TerceroAsignado;
+use App\Models\TerceroVive;
 use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 
 
@@ -180,6 +182,48 @@ class WSController extends Controller
         $input['FechaProcesaDeclaPreRegistroNNA']  = Carbon::now()->toDateTimeString();
 
         $datos = Nnapren::create($input);
+        
+        // Crear el registro TerceroAsignado
+        $terceroAsignadoData = [
+            'id_prenna'          => $datos->id,
+            'dni'                => $input['tercero_a_dni'] ?? null,
+            'nombre'             => $input['tercero_a_nombre'] ?? null,
+            'correo'             => $input['tercero_a_correo'] ?? null,
+            'telefono'           => $input['tercero_a_telefono'] ?? null,
+            'domicilio_completo' => $input['tercero_a_domicilio_completo'] ?? null,
+            'departamento_code'  => $input['tercero_a_departamento_code'] ?? null,
+            'departamento_label' => $input['tercero_a_departamento_label'] ?? null,
+            'municipio_code'     => $input['tercero_a_municipio_code'] ?? null,
+            'municipio_label'    => $input['tercero_a_municipio_label'] ?? null,
+            'city_code'          => $input['tercero_a_city_code'] ?? null,
+            'city_label'         => $input['tercero_a_city_label'] ?? null,
+            'barrio_code'        => $input['tercero_a_barrio_code'] ?? null,
+            'barrio_label'       => $input['tercero_a_barrio_label'] ?? null,
+            'direccion_exacta'   => $input['tercero_a_direccion_exacta'] ?? null,
+        ];
+    
+        TerceroAsignado::create($terceroAsignadoData);
+        
+        // Crear el registro TerceroAsignado
+        $terceroViveData = [
+            'id_prenna'          => $datos->id,
+            'dni'                => $input['tercero_v_dni'] ?? null,
+            'nombre'             => $input['tercero_v_nombre'] ?? null,
+            'correo'             => $input['tercero_v_correo'] ?? null,
+            'telefono'           => $input['tercero_v_telefono'] ?? null,
+            'domicilio_completo' => $input['tercero_v_domicilio_completo'] ?? null,
+            'departamento_code'  => $input['tercero_v_departamento_code'] ?? null,
+            'departamento_label' => $input['tercero_v_departamento_label'] ?? null,
+            'municipio_code'     => $input['tercero_v_municipio_code'] ?? null,
+            'municipio_label'    => $input['tercero_v_municipio_label'] ?? null,
+            'city_code'          => $input['tercero_v_city_code'] ?? null,
+            'city_label'         => $input['tercero_v_city_label'] ?? null,
+            'barrio_code'        => $input['tercero_v_barrio_code'] ?? null,
+            'barrio_label'       => $input['tercero_v_barrio_label'] ?? null,
+            'direccion_exacta'   => $input['tercero_v_direccion_exacta'] ?? null,
+        ];
+    
+        TerceroVive::create($terceroViveData);
 
         // Construir la respuesta con solo el ID y otro campo
         $data = [
@@ -196,33 +240,34 @@ class WSController extends Controller
 
     public function obtenerPreRegistroNNA($id = null)
     {
-
-        if(empty($id)){
-            $error = ['error'=>[__('Ingregar el DNI a consultar.')]];
+        if (empty($id)) {
+            $error = ['error' => [__('Ingresar el DNI a consultar.')]];
             return ApiHelpers::validation($error);
         }
-
-        $nnapren = Nnapren::where('DNI_NNA',$id)->first();
-
-        
+    
+        $nnapren = Nnapren::with(['terceroAsignado', 'terceroVive'])
+                    ->where('DNI_NNA', $id)
+                    ->first();
+    
         $data = ['PreRegistroNNA' => $nnapren];
-        $message =  ['success'=>[__('PreRegistroNNA')]];
+        $message = ['success' => [__('PreRegistroNNA')]];
         return ApiHelpers::success($data, $message);
     }
+
 
 
 
     public function obtenerCertificadoNacimiento($id = null)
     {
         $xmlBody = '
-            <qry_CertificadoNacimiento xmlns="https://servicios.rnp.hn">
+            <Qry_CertificadoNacimiento xmlns="http://servicios.rnp.hn/">
                 <NumeroIdentidad>' . $id . '</NumeroIdentidad>
                 <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
                 <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
                 <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
-            </qry_CertificadoNacimiento>';
+            </Qry_CertificadoNacimiento>';
 
-        $response = $this->makeSoapRequest('qry_CertificadoNacimiento', $xmlBody, env('wsRNP_I'), "I");
+        $response = $this->makeSoapRequest('Qry_CertificadoNacimiento', $xmlBody, env('wsRNP_I'), "I");
 
         if (isset($response['error'])) {
             return response()->json(['error' => $response['error']], 500);
@@ -237,14 +282,14 @@ class WSController extends Controller
     public function obtenerArbolGenealogico($id = null)
     {
         $xmlBody = '
-            <lst_ArbolGenealogico xmlns="https://servicios.rnp.hn">
-                <NumeroIdentidad>' . $id . '</NumeroIdentidad>
+            <Qry_ArbolGenealogico xmlns="http://servicios.rnp.hn/">
+                <identidad>' . $id . '</identidad>
                 <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
                 <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
                 <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
-            </lst_ArbolGenealogico>';
+            </Qry_ArbolGenealogico>';
 
-        $response = $this->makeSoapRequest('lst_ArbolGenealogico', $xmlBody, env('wsRNP_I'), "I");
+        $response = $this->makeSoapRequest('Qry_ArbolGenealogico', $xmlBody, env('wsRNP_I'), "I");
 
         if (isset($response['error'])) {
             return response()->json(['error' => $response['error']], 500);
@@ -252,12 +297,42 @@ class WSController extends Controller
 
         return ApiHelpers::success([$response], ['success' => ['Arbol Genealogico']]);
     }
+    
+    public function ObtenerExpedientes(Request $request)
+    {
+        
+        $validator = Validator::make($request->all(), [
+            'idExpediente' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return ApiHelpers::validation(['error' => $validator->errors()->all()]);
+        }
+
+        $idExpediente = $request->idExpediente;
+        
+
+        $xmlBody = '
+            <Lst_ExpedienteCODEX xmlns="http://servicios.rnp.hn/">
+                <IdExpediente>' . $idExpediente . '</IdExpediente>
+                <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
+                <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
+                <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
+            </Lst_ExpedienteCODEX>';
+
+        $response = $this->makeSoapRequest('Lst_ExpedienteCODEX', $xmlBody, env('wsRNP_I'), "I");
+
+        if (isset($response['error'])) {
+            return response()->json(['error' => $response['error']], 500);
+        }
+
+        return ApiHelpers::success([$response], ['success' => ['Lst_ExpedienteCODEX']]);
+    }
 
 
     public function obtenerInscripcionNacimiento($id = null)
     {
         $xmlBody = '
-            <Qry_InscripcionNacimiento xmlns="https://servicios.rnp.hn">
+            <Qry_InscripcionNacimiento xmlns="http://servicios.rnp.hn/">
                 <NumeroIdentidad>' . $id . '</NumeroIdentidad>
                 <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
                 <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
@@ -283,30 +358,32 @@ class WSController extends Controller
     public function obtenerValidacionDNI($id = null)
     {
         $xmlBodyDirec = '
-            <Qry_DireccionInscrito xmlns="https://servicios.rnp.hn">
-                <NumeroIdentidad>' . $id . '</NumeroIdentidad>
+            <qry_RecuperaDNIxQR xmlns="http://servicios.rnp.hn/">
+                <CodigoQR>http://www.rnp.hn/valida/' . $id . '</CodigoQR>
                 <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
                 <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
                 <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
-            </Qry_DireccionInscrito>';
+            </qry_RecuperaDNIxQR>';
 
-        $datadirec = $this->makeSoapRequest('Qry_DireccionInscrito', $xmlBodyDirec, env('wsRNP_I'), "I");
+        $datadirec = $this->makeSoapRequest('qry_RecuperaDNIxQR', $xmlBodyDirec, env('wsRNP_I'), "I");
 
         if (isset($datadirec['error'])) {
             return response()->json(['error' => $datadirec['error']], 500);
         }
 
+        
+
         $xmlBodyFoto = '
-            <qry_FotoInscrito xmlns="https://servicios.rnp.hn">
-                <NumeroIdentidad>' . $id . '</NumeroIdentidad>
+            <Qry_FotoInscrito xmlns="http://servicios.rnp.hn/">
+                <NumeroIdentidad>' . $datadirec->DNI . '</NumeroIdentidad>
                 <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
                 <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
                 <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
-            </qry_FotoInscrito>';
+            </Qry_FotoInscrito>';
 
-        $dataFoto = $this->makeSoapRequest('qry_FotoInscrito', $xmlBodyFoto, env('wsRNP_I'), "I");
+        $dataFoto = $this->makeSoapRequest('Qry_FotoInscrito', $xmlBodyFoto, env('wsRNP_I'), "I");
 
-        $fechan = $datadirec->Inscripcion->FechaDeNacimiento ?? null;
+        $fechan = $datadirec->FechaNacimiento ?? null;
         $foto = $dataFoto->Foto ?? null;
         $edad = $fechan ? Carbon::parse($fechan)->age : null;
 
@@ -336,14 +413,14 @@ class WSController extends Controller
         }
 
         $xmlBody = '
-            <Qry_IdentidadxCodigoBarras xmlns="https://servicios.rnp.hn">
-                <CodigoBarras>' . $request->LinkCB . '</CodigoBarras>
+            <qry_RecuperaDNIxQR xmlns="http://servicios.rnp.hn/">
+                <CodigoQR>' . $request->LinkCB . '</CodigoQR>
                 <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
                 <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
                 <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
-            </Qry_IdentidadxCodigoBarras>';
+            </qry_RecuperaDNIxQR>';
 
-        $response = $this->makeSoapRequest('Qry_IdentidadxCodigoBarras', $xmlBody, env('wsRNP_I'), "I" );
+        $response = $this->makeSoapRequest('qry_RecuperaDNIxQR', $xmlBody, env('wsRNP_I'), "I" );
 
         if (isset($response['error'])) {
             return response()->json(['error' => $response['error']], 500);
@@ -366,15 +443,15 @@ class WSController extends Controller
         }
 
         $xmlBody = '
-            <qry_ComparaFotoInscrito xmlns="https://servicios.rnp.hn">
+            <Qry_ComparaFotoInscrito xmlns="http://servicios.rnp.hn/">
                 <NumeroIdentidad>' . $request->NumeroIdentidad . '</NumeroIdentidad>
                 <imgFoto>' . $request->imgFoto . '</imgFoto>
                 <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
                 <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
                 <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
-            </qry_ComparaFotoInscrito>';
+            </Qry_ComparaFotoInscrito>';
 
-        $response = $this->makeSoapRequest('qry_ComparaFotoInscrito', $xmlBody, env('wsRNP_I'), "I");
+        $response = $this->makeSoapRequest('Qry_ComparaFotoInscrito', $xmlBody, env('wsRNP_I'), "I");
 
         if (isset($response['error'])) {
             return response()->json(['error' => $response['error']], 500);
@@ -389,7 +466,7 @@ class WSController extends Controller
     public function obtenerInfoCompletaInscripcion($id = null)
     {
         $xmlBody = '
-            <Qry_InfCompletaInscripcion xmlns="https://servicios.rnp.hn">
+            <Qry_InfCompletaInscripcion xmlns="http://servicios.rnp.hn/">
                 <NumeroIdentidad>' . $id . '</NumeroIdentidad>
                 <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
                 <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
@@ -676,7 +753,7 @@ return response()->json($responseData);
     private function makeSoapRequest($action, $xmlBody, $wsdl, $ws)
     {
         if ($ws == 'I') {
-            $fields = '<?xml version="1.0" encoding="utf-8"?>
+            $fields = '
                 <Envelope xmlns="http://www.w3.org/2003/05/soap-envelope">
                     <Body>' . $xmlBody . '</Body>
                 </Envelope>';
@@ -702,7 +779,7 @@ return response()->json($responseData);
             CURLOPT_POSTFIELDS => $fields,
             CURLOPT_HTTPHEADER => [
                 'Content-Type: text/xml; charset=utf-8',
-                'SOAPAction: "https://servicios.rnp.hn/' . $action . '"'
+                'SOAPAction: "http://servicios.rnp.hn/' . $action . '"'
             ],
         ]);
 
@@ -713,7 +790,7 @@ return response()->json($responseData);
             return ['error' => "Error en la solicitud CURL: $error_msg"];
         }
 
-        die($response);
+        //die($response);
         curl_close($curl);
         return $this->parseSoapResponse($response, $action);
     }
@@ -753,7 +830,7 @@ return response()->json($responseData);
         // https://wstest.rnp.hn:1893/API/WSkioskos.asmx
     
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://soapservices.rnp.hn/API/WSkioskos.asmx',
+            CURLOPT_URL => 'https://wstest.rnp.hn:82/api/Wsappsrnp.asmx',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

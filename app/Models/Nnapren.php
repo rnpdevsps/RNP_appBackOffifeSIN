@@ -82,6 +82,31 @@ class Nnapren extends Model
         'SeApePerAutorizadaEntrega',
         'TipoRelaPerAutorizadaEntrega',
         'ParentescoPerAutorizadaEntrega',
-        'Genero_NNA'
+        'Genero_NNA',
+        'correo',
+        'telefono',
+        'domicilio_completo',
+        'departamento_code',
+        'departamento_label',
+        'municipio_code',
+        'municipio_label',
+        'city_code',
+        'city_label',
+        'barrio_code',
+        'barrio_label',
+        'direccion_exacta',
+        'motivo_discrepancia'
     ];
+    
+
+    public function terceroAsignado()
+    {
+        return $this->hasMany(TerceroAsignado::class, 'id_prenna', 'id');
+    }
+    
+    public function terceroVive()
+    {
+        return $this->hasMany(TerceroVive::class, 'id_prenna', 'id');
+    }
+
 }

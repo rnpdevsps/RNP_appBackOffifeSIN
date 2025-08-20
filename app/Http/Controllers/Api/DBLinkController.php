@@ -10,170 +10,297 @@ use Illuminate\Support\Facades\Validator;
 
 class DBLinkController extends Controller
 {
-    public function obtenerPaises($id = null)
-    {
-        if (!empty($id)) {
-            $paises = "Select * from enrollment.REF_COUNTRY@enroll WHERE CODE_COUNTRY = " . $id;
-        } else {
-            $paises = "Select * from enrollment.REF_COUNTRY@enroll";
-        }
-        
-        $result = \DB::connection('oracle3')->select($paises);
-        $data = ['paises' => $result];
-        $message =  ['success'=>[__('Paises')]];
-        return ApiHelpers::success($data, $message);
-    }
 
-    public function obtenerDepartamentos($id = null)
-    {
-        if (!empty($id)) {
-            $paises = "Select * from enrollment.REF_DEPARTMENT@enroll WHERE DEPARTMENT_CODE  = " . $id;
-        } else {
-            $paises = "Select * from enrollment.REF_DEPARTMENT@enroll";
-        }
-        
-        $result = \DB::connection('oracle3')->select($paises);
-        $data = ['departamentos' => $result];
-        $message =  ['success'=>[__('Departamento')]];
-        return ApiHelpers::success($data, $message);
-    }
+    public function obtenerPaises(Request $request)
+    { 
+        $xmlBody = '
+            <Lst_Obtener_Paises xmlns="http://servicios.rnp.hn/">
+                <CodigoPais>' . $request->CodigoPais . '</CodigoPais>
+                <MaxCount>' . $request->MaxCount . '</MaxCount>
+                <SkipCount>' . $request->SkipCount . '</SkipCount>
+                <Sorting>' . $request->Sorting . '</Sorting>
+                <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
+                <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
+                <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
+            </Lst_Obtener_Paises>';
 
-    public function obtenerMunicipios($id = null, $id2 = null)
+        $response = $this->makeSoapRequest('Lst_Obtener_Paises', $xmlBody, env('wsRNP_I'), "I");
+
+        if (isset($response['error'])) {
+            return response()->json(['error' => $response['error']], 500);
+        }
+
+        return ApiHelpers::success([$response], ['success' => ['Paises']]);
+    }
+    
+    
+    public function obtenerCiudadano(Request $request)
+    { 
+        
+        $xmlBody = '
+            <Lst_Obtener_Ciudadano xmlns="http://servicios.rnp.hn/">
+                <DNICiudadano>' . $request->DNICiudadano . '</DNICiudadano>
+                <DNIPadre>' . $request->DNIPadre . '</DNIPadre>
+                <DNIMadre>' . $request->DNIMadre . '</DNIMadre>
+                <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
+                <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
+                <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
+            </Lst_Obtener_Ciudadano>';
+
+        $response = $this->makeSoapRequest('Lst_Obtener_Ciudadano', $xmlBody, env('wsRNP_I'), "I");
+
+        if (isset($response['error'])) {
+            return response()->json(['error' => $response['error']], 500);
+        }
+
+        return ApiHelpers::success([$response], ['success' => ['Ciudadano']]);
+    }
+    
+    public function obtenerDepartamentos(Request $request)
+    { 
+        
+        $xmlBody = '
+            <Lst_Obtener_Departamentos xmlns="http://servicios.rnp.hn/">
+                <CodigoDepartamento>' . $request->CodigoDepartamento . '</CodigoDepartamento>
+                <MaxCount>' . $request->MaxCount . '</MaxCount>
+                <SkipCount>' . $request->SkipCount . '</SkipCount>
+                <Sorting>' . $request->Sorting . '</Sorting>
+                <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
+                <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
+                <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
+            </Lst_Obtener_Departamentos>';
+
+        $response = $this->makeSoapRequest('Lst_Obtener_Departamentos', $xmlBody, env('wsRNP_I'), "I");
+
+        if (isset($response['error'])) {
+            return response()->json(['error' => $response['error']], 500);
+        }
+
+        return ApiHelpers::success([$response], ['success' => ['Departamento']]);
+    }
+    
+    public function obtenerMunicipios(Request $request)
+    { 
+        $xmlBody = '
+            <Lst_Obtener_Municipios xmlns="http://servicios.rnp.hn/">
+                <CodigoDepartamento>' . $request->CodigoDepartamento . '</CodigoDepartamento>
+                <CodigoMunicipio>' . $request->CodigoMunicipio . '</CodigoMunicipio>
+                <MaxCount>' . $request->MaxCount . '</MaxCount>
+                <SkipCount>' . $request->SkipCount . '</SkipCount>
+                <Sorting>' . $request->Sorting . '</Sorting>
+                <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
+                <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
+                <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
+            </Lst_Obtener_Municipios>';
+
+        $response = $this->makeSoapRequest('Lst_Obtener_Municipios', $xmlBody, env('wsRNP_I'), "I");
+
+        if (isset($response['error'])) {
+            return response()->json(['error' => $response['error']], 500);
+        }
+
+        return ApiHelpers::success([$response], ['success' => ['Municipios']]);
+    }
+    
+    public function obtenerBarrios(Request $request)
+    { 
+        $xmlBody = '
+            <Lst_Obtener_Barrios xmlns="http://servicios.rnp.hn/">
+                <CodigoDepartamento>' . $request->CodigoDepartamento . '</CodigoDepartamento>
+                <CodigoMunicipio>' . $request->CodigoMunicipio . '</CodigoMunicipio>
+                <CodigoCiudad>' . $request->CodigoCiudad . '</CodigoCiudad>
+                <CodigoBarrio>' . $request->CodigoBarrio . '</CodigoBarrio>
+                <MaxCount>' . $request->MaxCount . '</MaxCount>
+                <SkipCount>' . $request->SkipCount . '</SkipCount>
+                <Sorting>' . $request->Sorting . '</Sorting>
+                <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
+                <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
+                <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
+            </Lst_Obtener_Barrios>';
+
+        $response = $this->makeSoapRequest('Lst_Obtener_Barrios', $xmlBody, env('wsRNP_I'), "I");
+
+        if (isset($response['error'])) {
+            return response()->json(['error' => $response['error']], 500);
+        }
+
+        return ApiHelpers::success([$response], ['success' => ['Barrios']]);
+    }
+    
+    
+    public function obtenerGrupoEtnicos(Request $request)
+    { 
+        $xmlBody = '
+            <Lst_Obtener_GrupoEtnico xmlns="http://servicios.rnp.hn/">
+                <CodigoGrupoEtnico>' . $request->CodigoGrupoEtnico . '</CodigoGrupoEtnico>
+                <MaxCount>' . $request->MaxCount . '</MaxCount>
+                <SkipCount>' . $request->SkipCount . '</SkipCount>
+                <Sorting>' . $request->Sorting . '</Sorting>
+                <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
+                <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
+                <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
+            </Lst_Obtener_GrupoEtnico>';
+
+        $response = $this->makeSoapRequest('Lst_Obtener_GrupoEtnico', $xmlBody, env('wsRNP_I'), "I");
+
+        if (isset($response['error'])) {
+            return response()->json(['error' => $response['error']], 500);
+        }
+
+        return ApiHelpers::success([$response], ['success' => ['Grupo Etnicos']]);
+    }
+    
+    
+    public function obtenerParentesco(Request $request)
+    { 
+        $xmlBody = '
+            <Lst_Obtener_Parentesco xmlns="http://servicios.rnp.hn/">
+                <CodigoParentesco>' . $request->CodigoParentesco . '</CodigoParentesco>
+                <MaxCount>' . $request->MaxCount . '</MaxCount>
+                <SkipCount>' . $request->SkipCount . '</SkipCount>
+                <Sorting>' . $request->Sorting . '</Sorting>
+                <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
+                <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
+                <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
+            </Lst_Obtener_Parentesco>';
+
+        $response = $this->makeSoapRequest('Lst_Obtener_Parentesco', $xmlBody, env('wsRNP_I'), "I");
+
+        if (isset($response['error'])) {
+            return response()->json(['error' => $response['error']], 500);
+        }
+
+        return ApiHelpers::success([$response], ['success' => ['Parentesco']]);
+    }
+    
+    
+    
+    
+    
+
+
+    /**
+     * Función genérica para hacer solicitudes SOAP
+     */
+    private function makeSoapRequest($action, $xmlBody, $wsdl, $ws)
     {
-        if (!empty($id)) {
-            if (!empty($id2)) {
-                $paises = "Select * from enrollment.REF_MUNICIPALITY@enroll WHERE DEPARTMENT_CODE  = " . $id. " AND MUNICIPALITY_CODE  = " . $id2;
-            } else {
-                $paises = "Select * from enrollment.REF_MUNICIPALITY@enroll WHERE DEPARTMENT_CODE  = " . $id;
-            }
+
+        $fields = '
+            <Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+                <Body>' . $xmlBody . '</Body>
+            </Envelope>';
             
-        } else {
-            $paises = "Select * from enrollment.REF_MUNICIPALITY@enroll";
+            
+       //die($fields);
+
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $wsdl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => $fields,
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: text/xml; charset=utf-8',
+                'SOAPAction: "http://servicios.rnp.hn/' . $action . '"'
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+        if (curl_errno($curl)) {
+            $error_msg = curl_error($curl);
+            curl_close($curl);
+            return ['error' => "Error en la solicitud CURL: $error_msg"];
         }
-        
-        $result = \DB::connection('oracle3')->select($paises);
-        $data = ['municipios' => $result];
-        $message =  ['success'=>[__('Municipios')]];
-        return ApiHelpers::success($data, $message);
+
+        //die($response);
+        curl_close($curl);
+        return $this->parseSoapResponse($response, $action);
     }
 
-    public function obtenerBarrios($id = null, $id2 = null, $id3 = null, $id4 = null)
+    /**
+     * Procesar respuesta SOAP
+     */
+    private function parseSoapResponse($response, $action)
     {
-        if (!empty($id)) {
-            if (!empty($id2) && empty($id3)) {
-                $query = "Select * from enrollment.REF_BARRIO@enroll 
-                          WHERE DEPARTMENT_CODE = :id 
-                          AND MUNICIPALITY_CODE = :id2";
-                $bindings = ['id' => $id, 'id2' => $id2];
-            } elseif (!empty($id2) && !empty($id3) && empty($id4)) {
-                $query = "Select * from enrollment.REF_BARRIO@enroll 
-                          WHERE DEPARTMENT_CODE = :id 
-                          AND MUNICIPALITY_CODE = :id2 
-                          AND CITY_CODE = :id3";
-                $bindings = ['id' => $id, 'id2' => $id2, 'id3' => $id3];
-            } elseif (!empty($id2) && !empty($id3) && !empty($id4)) {
-                $query = "Select * from enrollment.REF_BARRIO@enroll 
-                          WHERE DEPARTMENT_CODE = :id 
-                          AND MUNICIPALITY_CODE = :id2 
-                          AND CITY_CODE = :id3 
-                          AND suburb_code = :id4";
-                $bindings = ['id' => $id, 'id2' => $id2, 'id3' => $id3, 'id4' => $id4];
-            } else {
-                $query = "Select * from enrollment.REF_BARRIO@enroll 
-                WHERE DEPARTMENT_CODE = :id";
-                $bindings = ['id' => $id];
-            }
-        } else {
-            $query = "Select * from enrollment.REF_BARRIO@enroll";
-            $bindings = [];
+        try {
+            $xml = simplexml_load_string($response);
+            $namespaces = $xml->getNamespaces(true);
+            $body = $xml->children($namespaces['soap'])->Body;
+            $responseBody = $body->children($namespaces[''])->{$action . 'Response'};
+
+            return $responseBody->{$action . 'Result'};
+        } catch (Exception $e) {
+            return ['error' => "Error procesando la respuesta XML: " . $e->getMessage()];
+        }
+    }
+
+
+
+
+
+    private function realizarSolicitudSOAP($accion, $parametros)
+    {
+        $curl = curl_init();
+        
+        $soapEnvelope = '<?xml version="1.0" encoding="utf-8"?>
+        <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+            <soap:Body>
+                <' . $accion . ' xmlns="http://servicios.rnp.hn/">
+                    ' . $parametros . '
+                </' . $accion . '>
+            </soap:Body>
+        </soap:Envelope>';
+
+        // https://soapservices.rnp.hn/API/WSkioskos.asmx
+        // https://wstest.rnp.hn:1893/API/WSkioskos.asmx
+    
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://129.146.180.156:82/api/WSAppsRNP.asmx',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS =>$soapEnvelope,
+            CURLOPT_HTTPHEADER => array(
+              'Content-Type: text/xml; charset=utf-8',
+              'SOAPAction: http://servicios.rnp.hn/'. $accion
+            ),
+          ));
+    
+        $response = curl_exec($curl);
+        
+        if (curl_errno($curl)) {
+            $error_msg = curl_error($curl);
+            curl_close($curl);
+            die("Error en la solicitud CURL: $error_msg");
+        }
+        
+        curl_close($curl);
+    
+        // Procesar la respuesta XML
+        try {
+            $xml = simplexml_load_string($response);
+            $namespaces = $xml->getNamespaces(true);
+            $body = $xml->children($namespaces['soap'])->Body;
+            $responseBody = $body->children($namespaces[''])->{$accion . 'Response'};
+        } catch (Exception $e) {
+            die("Error procesando la respuesta XML: " . $e->getMessage());
         }
     
-        $result = \DB::connection('oracle3')->select($query, $bindings);
-        
-        $data = ['barrios' => $result];
-        $message =  ['success'=>[__('Barrios')]];
-        return ApiHelpers::success($data, $message);
+        return $responseBody->{$accion . 'Result'};
     }
 
-    public function obtenerGrupoEtnicos($id = null)
-    {
-        if (!empty($id)) {
-            $paises = "Select * from enrollment.REF_GRUPO_ETNICO@enroll WHERE GRUPO_ETNICO_CODE  = " . $id;
-        } else {
-            $paises = "Select * from enrollment.REF_GRUPO_ETNICO@enroll";
-        }
-        
-        $result = \DB::connection('oracle3')->select($paises);
-        $data = ['grupoetnicos' => $result];
-        $message =  ['success'=>[__('Grupo Etnicos')]];
-        return ApiHelpers::success($data, $message);
-    }
-
-    public function obtenerParentesco($id = null)
-    {
-        if (!empty($id)) {
-            $paises = "Select * from enrollment.REF_PARENTESCO@enroll WHERE PARENTESCO_CODE  = " . $id;
-        } else {
-            $paises = "Select * from enrollment.REF_PARENTESCO@enroll";
-        }
-        
-        $result = \DB::connection('oracle3')->select($paises);
-        $data = ['parentesco' => $result];
-        $message =  ['success'=>[__('Parentesco')]];
-        return ApiHelpers::success($data, $message);
-    }
-
-    public function obtenerGenero($id = null)
-    {
-        if (!empty($id)) {
-            $paises = "Select * from enrollment.REF_PARENTESCO@enroll WHERE PARENTESCO_CODE  = " . $id;
-        } else {
-            $paises = "Select * from enrollment.REF_PARENTESCO@enroll";
-        }
-        
-        $result = \DB::connection('oracle3')->select($paises);
-        $data = ['parentesco' => $result];
-        $message =  ['success'=>[__('Parentesco')]];
-        return ApiHelpers::success($data, $message);
-    }
-
-
-    public function obtenerCiudadano(Request $request)
-    {
-
-        $validator = Validator::make($request->all(), [
-            'dniPrincipal' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return ApiHelpers::validation(['error' => $validator->errors()->all()]);
-        }
-
-        if (empty($request->dniPadre) && empty($request->dniMadre)) {
-          $buscar = [$request->dniPrincipal];
-        }
-        if (!empty($request->dniPadre) && empty($request->dniMadre)) {
-          $buscar = [$request->dniPrincipal, $request->dniPadre];
-        }
-        if (empty($request->dniPadre) && !empty($request->dniMadre)) {
-          $buscar = [$request->dniPrincipal, $request->dniMadre];
-        }
-        if (!empty($request->dniPadre) && !empty($request->dniMadre)) {
-          $buscar = [$request->dniPrincipal, $request->dniPadre, $request->dniMadre];
-        }
-
-        $placeholders = implode(',', array_fill(0, count($buscar), '?'));
-
-        if (!empty($request->dniPrincipal)) {
-            $sql = "SELECT * FROM enrollment.CIUDADANOS@enroll WHERE IDENTITY_NUMBER IN ($placeholders)";
-        } else {
-            $sql = "Select * from enrollment.CIUDADANOS@enroll";
-        }
-        
-        //$result = \DB::connection('oracle3')->select($paises);
-        $result = \DB::connection('oracle3')->select($sql, $buscar);
-        $data = ['ciudadano' => $result];
-        $message =  ['success'=>[__('Ciudadano')]];
-        return ApiHelpers::success($data, $message);
-    }
 
 }

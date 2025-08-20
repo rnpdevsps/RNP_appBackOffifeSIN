@@ -11,35 +11,83 @@ use Illuminate\Support\Facades\Validator;
 class ArbolGenealogicoController extends Controller
 {
 
-
+    
+    
     public function RevisionArbolxPadre($id = null)
-    {
-        $parametros = "
-            <NumeroIdentidad>".$id."</NumeroIdentidad>
-            <CodigoInstitucion>" . env('CodigoInstitucion') . "</CodigoInstitucion>
-            <CodigoSeguridad>" . env('CodigoSeguridad') . "</CodigoSeguridad>
-            <UsuarioInstitucion>" . env('UsuarioInstitucion') . "</UsuarioInstitucion>
-        ";
+    { 
         
-        $data = [$this->realizarSolicitudSOAP('lst_RevisionArbolxPadre', $parametros)];
-        $message = ['success' => [__('Revision Arbol por Padre')]];
-        return ApiHelpers::success($data, $message);
+        $xmlBody = '
+            <Lst_RevisionArbolxPadre xmlns="http://servicios.rnp.hn/">
+                <NumeroIdentidad>' . $id . '</NumeroIdentidad>
+                <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
+                <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
+                <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
+            </Lst_RevisionArbolxPadre>';
+
+        $response = $this->makeSoapRequest('Lst_RevisionArbolxPadre', $xmlBody, env('wsRNP_I'), "I");
+
+        //die($response);
+
+        $dataArray = [];
+        $revData = $response->RevArbolData;
+        $dataArray['RevArbolData'] = [
+            'NumeroIdentidad'       => (string) $revData->NumeroIdentidad,
+            'Nombres'               => (string) $revData->Nombres,
+            'PrimerApellido'        => (string) $revData->PrimerApellido,
+            'FechaNacimiento'       => (string) $revData->FechaNacimiento,
+
+            'RPResultadoRevision'       => (string) $revData->RPResultadoRevision,
+            'RPNumeroIdentidad'     => (string) $revData->RPNumeroIdentidad,
+            'RPNombres'             => (string) $revData->RPNombres,
+            'RPPrimerApellido'      => (string) $revData->RPPrimerApellido,
+            'RPSegundoApellido'     => (string) $revData->RPSegundoApellido,
+            'RPFechaNacimiento'       => (string) $revData->RPFechaNacimiento,
+            'RPDescrDepartamento'     => (string) $revData->RPDescrDepartamento,
+            'RPDescrMunicipio'             => (string) $revData->RPDescrMunicipio,
+            'RMResultadoRevision'      => (string) $revData->RMResultadoRevision,
+            'RMNumeroIdentidad'     => (string) $revData->RMNumeroIdentidad,
+            'RMNombres'     => (string) $revData->RMNombres,
+            'RMPrimerApellido'     => (string) $revData->RMPrimerApellido,
+            'RMSegundoApellido'     => (string) $revData->RMSegundoApellido,
+            'RMFechaNacimiento'     => (string) $revData->RMFechaNacimiento,
+            'RMDescrDepartamento'     => (string) $revData->RMDescrDepartamento,
+            'RMDescrMunicipio'     => (string) $revData->RMDescrMunicipio,
+
+            'OrigenRevision'        => is_object($revData->OrigenRevision) ? '' : (string) $revData->OrigenRevision,
+            'RevisadoXCiudadano'    => (string) $revData->RevisadoXCiudadano,
+            'FechaRevision'         => is_object($revData->FechaRevision) ? '' : (string) $revData->FechaRevision,
+            'AprobadoXCiudadano'    => (string) $revData->AprobadoXCiudadano,
+            'ComentariosCiudadano'  => is_object($revData->ComentariosCiudadano) ? '' : (string) $revData->ComentariosCiudadano,
+            'ProcesadoXRNP'         => (string) $revData->ProcesadoXRNP,
+            'DetalleError' => [
+                'TipoDeError'       => (string) $revData->DetalleError->TipoDeError ?? '',
+                'DescripcionError'  => (string) $revData->DetalleError->DescripcionError ?? '',
+            ],
+        ];
+
+
+        if (isset($response['error'])) {
+            return response()->json(['error' => $response['error']], 500);
+        }
+
+        return ApiHelpers::success([$dataArray], ['success' => ['Revision Arbol por Padre']]);
     }
+    
 
 
     public function RevisionArbolxPadreRESP($id = null)
     {
         $xmlBody = '
-            <lst_RevisionArbolxPadre xmlns="http://tempuri.org/">
+            <Lst_RevisionArbolxPadre xmlns="http://tempuri.org/">
                 <NumeroIdentidad>' . $id . '</NumeroIdentidad>
                 <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
                 <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
                 <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
-            </lst_RevisionArbolxPadre>';
+            </Lst_RevisionArbolxPadre>';
 
-        $response = $this->makeSoapRequest('lst_RevisionArbolxPadre', $xmlBody, env('wsRNP_A')); 
+        $response = $this->makeSoapRequest('Lst_RevisionArbolxPadre', $xmlBody, env('wsRNP_A')); 
+        
 
-        return ApiHelpers::success([$response], ['success' => ['Revision Arbol por Padre']]);
 
         $dataArray = [];
         $revData = $response->RevArbolData;
@@ -88,15 +136,17 @@ class ArbolGenealogicoController extends Controller
 
     public function RevisionArbolxInscripcion($id = null)
     {
-        $xmlBody = '
-            <qry_RevisionArbolxInscripcion xmlns="http://tempuri.org/">
+        
+         $xmlBody = '
+            <Qry_RevisionArbolxInscripcion xmlns="http://servicios.rnp.hn/">
                 <NumeroIdentidad>' . $id . '</NumeroIdentidad>
                 <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
                 <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
                 <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
-            </qry_RevisionArbolxInscripcion>';
+            </Qry_RevisionArbolxInscripcion>';
 
-        $response = $this->makeSoapRequest('qry_RevisionArbolxInscripcion', $xmlBody, env('wsRNP_A'));
+        $response = $this->makeSoapRequest('Qry_RevisionArbolxInscripcion', $xmlBody, env('wsRNP_I'), "I");
+
 
 
         $dataArray = [];
@@ -150,19 +200,23 @@ class ArbolGenealogicoController extends Controller
         if ($validator->fails()) {
             return ApiHelpers::validation(['error' => $validator->errors()->all()]);
         }
-
+        
         $xmlBody = '
-            <post_ActualizarRevisionArbolGen xmlns="http://tempuri.org/">
+            <Post_ActualizarRevisionArbolGen xmlns="http://servicios.rnp.hn/">
                 <NumeroIdentidad>' . $request->NumeroIdentidad . '</NumeroIdentidad>
                 <OrigenRevision>PEI</OrigenRevision>
                 <AprobadoXCiudadano>' . $request->AprobadoXCiudadano . '</AprobadoXCiudadano>
                 <Comentarios>' . $request->Comentarios . '</Comentarios>
+                <CorreoElectronico>' . $request->CorreoElectronico . '</CorreoElectronico>
+                <Telefono>' . $request->Telefono . '</Telefono>
                 <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
                 <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
                 <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
-            </post_ActualizarRevisionArbolGen>';
+            </Post_ActualizarRevisionArbolGen>';
 
-        $response = $this->makeSoapRequest('post_ActualizarRevisionArbolGen', $xmlBody, env('wsRNP_A'));
+        $response = $this->makeSoapRequest('Post_ActualizarRevisionArbolGen', $xmlBody, env('wsRNP_I'), "I");
+        
+    
 
         if (isset($response['error'])) {
             return response()->json(['error' => $response['error']], 500);
@@ -174,14 +228,17 @@ class ArbolGenealogicoController extends Controller
     /**
      * Función genérica para hacer solicitudes SOAP
      */
-    private function makeSoapRequest($action, $xmlBody, $wsdl)
+    private function makeSoapRequest($action, $xmlBody, $wsdl, $ws)
     {
-        $fields = '<?xml version="1.0" encoding="utf-8"?>
-            <Envelope xmlns="http://www.w3.org/2003/05/soap-envelope">
+
+        $fields = '
+            <Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
                 <Body>' . $xmlBody . '</Body>
             </Envelope>';
-        
-        
+            
+            
+       //die($fields);
+
         $curl = curl_init();
         curl_setopt_array($curl, [
             CURLOPT_URL => $wsdl,
@@ -196,18 +253,19 @@ class ArbolGenealogicoController extends Controller
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => $fields,
             CURLOPT_HTTPHEADER => [
-                'Content-Type: text/xml; charset=utf-8'
+                'Content-Type: text/xml; charset=utf-8',
+                'SOAPAction: "http://servicios.rnp.hn/' . $action . '"'
             ],
         ]);
 
         $response = curl_exec($curl);
-        //die($response); retornar el XML
         if (curl_errno($curl)) {
             $error_msg = curl_error($curl);
             curl_close($curl);
             return ['error' => "Error en la solicitud CURL: $error_msg"];
         }
 
+        //die($response);
         curl_close($curl);
         return $this->parseSoapResponse($response, $action);
     }
@@ -228,6 +286,7 @@ class ArbolGenealogicoController extends Controller
             return ['error' => "Error procesando la respuesta XML: " . $e->getMessage()];
         }
     }
+
 
 
 

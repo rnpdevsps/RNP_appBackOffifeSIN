@@ -26,7 +26,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::middleware([ValidateApiKey::class])->group(function () {
 
     Route::get('blogs/{slug}/', [BlogController::class, 'viewBlog'])->name('view.blog');
@@ -34,12 +33,12 @@ Route::middleware([ValidateApiKey::class])->group(function () {
     Route::get('obtenerNoticias', [BlogController::class, 'obtenerNoticias'])->name('obtenerNoticias');
     Route::get('obtenerCategorias', [BlogController::class, 'obtenerCategorias'])->name('obtenerCategorias');
 
-    Route::get('obtenerPaises/{id?}', [DBLinkController::class, 'obtenerPaises'])->name('obtenerPaises');
-    Route::get('obtenerDepartamentos/{id?}', [DBLinkController::class, 'obtenerDepartamentos'])->name('obtenerDepartamentos');
-    Route::get('obtenerMunicipios/{id?}/{id2?}', [DBLinkController::class, 'obtenerMunicipios'])->name('obtenerMunicipios');
-    Route::get('obtenerBarrios/{id?}/{id2?}/{id3?}/{id4?}', [DBLinkController::class, 'obtenerBarrios'])->name('obtenerBarrios');
-    Route::get('obtenerGrupoEtnicos/{id?}', [DBLinkController::class, 'obtenerGrupoEtnicos'])->name('obtenerGrupoEtnicos');
-    Route::get('obtenerParentesco/{id?}', [DBLinkController::class, 'obtenerParentesco'])->name('obtenerParentesco');
+    Route::post('obtenerPaises', [DBLinkController::class, 'obtenerPaises'])->name('obtenerPaises');
+    Route::post('obtenerDepartamentos', [DBLinkController::class, 'obtenerDepartamentos'])->name('obtenerDepartamentos');
+    Route::post('obtenerMunicipios', [DBLinkController::class, 'obtenerMunicipios'])->name('obtenerMunicipios');
+    Route::post('obtenerBarrios', [DBLinkController::class, 'obtenerBarrios'])->name('obtenerBarrios');
+    Route::post('obtenerGrupoEtnicos/', [DBLinkController::class, 'obtenerGrupoEtnicos'])->name('obtenerGrupoEtnicos');
+    Route::post('obtenerParentesco', [DBLinkController::class, 'obtenerParentesco'])->name('obtenerParentesco');
     Route::post('obtenerCiudadano', [DBLinkController::class, 'obtenerCiudadano'])->name('obtenerCiudadano');
     Route::get('obtenerGenero/{id?}', [DBLinkController::class, 'obtenerGenero'])->name('obtenerGenero');
 
@@ -61,7 +60,7 @@ Route::middleware([ValidateApiKey::class])->group(function () {
     Route::get('RevisionArbolxPadre/{id}', [ArbolGenealogicoController::class, 'RevisionArbolxPadre'])->name('RevisionArbolxPadre');
     Route::get('RevisionArbolxInscripcion/{id}', [ArbolGenealogicoController::class, 'RevisionArbolxInscripcion'])->name('RevisionArbolxInscripcion');
     Route::post('ActualizarRevisionArbolGen', [ArbolGenealogicoController::class, 'ActualizarRevisionArbolGen'])->name('ActualizarRevisionArbolGen');
-    Route::post('ObtenerExpedientes', [CodexController::class, 'ObtenerExpedientes'])->name('ObtenerExpedientes');
+    Route::post('ObtenerExpedientes', [WSController::class, 'ObtenerExpedientes'])->name('ObtenerExpedientes');
 
 
     Route::group(['prefix' => 'kiosko'], function () {

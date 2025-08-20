@@ -54,9 +54,9 @@ return [
     |
     */
 
-    'url' => 'http://localhost:8081/RNP_appBackOffifeSIN',
+    'url' => "https://apptest.rnp.hn",
 
-    'asset_url' => 'http://localhost:8081/RNP_appBackOffifeSIN',
+    'asset_url' => env('ASSET_URL'),
 
     /*
     |--------------------------------------------------------------------------

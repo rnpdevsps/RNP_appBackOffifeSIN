@@ -24,7 +24,7 @@
       right: 50px;
       text-align: center;
       font-size: 18px;
-      line-height: 1.8;
+      line-height: 1.6;
     }
     .label {
       color: #009CBD;
@@ -75,44 +75,61 @@
 <body >
   <div class="pdf-container">
     <div class="canvasLayer" style="position: relative;">
-        <img src="{{ asset('/images/fondo_pdf.png') }}" style="width: 100%;">
-        <img src="data:image/png;base64,{{ $foto }}" class="fotoPerfil" 
-            style="position: absolute; top: 180px; left: 249px; width: 269px; height: 280px;"">
-    </div>
+    <!-- Fondo -->
+    <img src="{{ asset('/images/fondo_pdf.png') }}" style="width: 100%;">
+
+    <!-- Foto de perfil -->
+    <img src="data:image/png;base64,{{ $foto }}" class="fotoPerfil" 
+        style="position: absolute; top: 180px; left: 249px; width: 269px; height: 280px;">
+
+    <!-- Marca de agua encima -->
+    <img src="{{ asset('/images/marca_agua.png') }}" class="marcaAgua"
+        style="position: absolute; top: 180px; left: 249px; width: 269px; height: 280px; opacity: 0.3;">
+</div>
+
 
     <div class="overlay-text">
       <div>
-        <span class="value"  style="font-size: 34.3454px; font-family: 'Montserrat', sans-serif; font-weight: 800;">{{ substr($datadirec->Inscripcion->NumInscripcion, 0, 4) . '-' . substr($datadirec->Inscripcion->NumInscripcion, 4, 4) . '-' . substr($datadirec->Inscripcion->NumInscripcion, 8) }}</span>
+        <span class="value"  style="font-size: 34.3454px; font-family: 'Montserrat', sans-serif; font-weight: 800;">{{ substr($datadirec->DNI, 0, 4) . '-' . substr($datadirec->DNI, 4, 4) . '-' . substr($datadirec->DNI, 8) }}</span>
         <br>
         <span class="label" style="font-size: 16.8666px; font-family: 'Montserrat', sans-serif; font-weight: 600;">IDENTIDAD</span>
       </div>
 
       <div class="salto"></div>
       <div>
-      <span class="value"  style="font-size: 21.9641px; font-family: 'Montserrat', sans-serif; font-weight: 800;">{{ $datadirec->Inscripcion->Nombres }} {{ $datadirec->Inscripcion->PrimerApellido }} {{ $datadirec->Inscripcion->SegundoApellido }}</span><br>
+      <span class="value"  style="font-size: 21.9641px; font-family: 'Montserrat', sans-serif; font-weight: 800;">{{ $datadirec->Nombres }}</span><br>
       <span class="label">NOMBRE</span>      
       </div>
 
       <div class="salto"></div>
       <div>
-        <span class="value"  style="font-size: 21.9641px; font-family: 'Montserrat', sans-serif; font-weight: 800;">{{ $datadirec->Municipio }}</span><br>
+        <span class="value"  style="font-size: 21.9641px; font-family: 'Montserrat', sans-serif; font-weight: 800;">{{ $datadirec->MunicipioResidencia }}</span><br>
         <span class="label">MUNICIPIO</span>
       </div>
 
       <div class="salto"></div>
       <div>
-        <span class="value"  style="font-size: 21.9641px; font-family: 'Montserrat', sans-serif; font-weight: 800;">{{ \Carbon\Carbon::parse($datadirec->Inscripcion->FechaDeNacimiento)->format('d-m-Y') }}</span><br>
+        <span class="value"  style="font-size: 21.9641px; font-family: 'Montserrat', sans-serif; font-weight: 800;">{{ \Carbon\Carbon::parse($datadirec->FechaNacimiento)->format('d-m-Y') }}</span><br>
         <span class="label">FECHA DE NACIMIENTO</span>
       </div>
 
       <div class="salto"></div>
       <div>
-        <span class="value" style="font-size: 21.9641px; font-family: 'Montserrat', sans-serif; font-weight: 800;">16-11-2031</span><br>
+        <span class="value" style="font-size: 21.9641px; font-family: 'Montserrat', sans-serif; font-weight: 800;">{{ \Carbon\Carbon::parse($datadirec->FechaExpiracionDNI)->format('d-m-Y') }}</span><br>
         <span class="label">FECHA DE EXPIRACIÓN</span>
       </div>
 
       <div class="salto"></div>
-      <div><span class="label" style="font-size: 14.636px; font-family: 'Montserrat', sans-serif; font-weight: 600; color:#6C7276">VALIDADO EL {{ \Carbon\Carbon::now()->format('d/m/Y') }} A LAS {{ \Carbon\Carbon::now()->setTimezone('America/Tegucigalpa')->format('h:i A') }}</span></div>
+      <div style="font-size: 14.636px; font-family: 'Montserrat', sans-serif; font-weight: 600; color:#6C7276;">
+        VALIDADO EL {{ \Carbon\Carbon::now()->format('d/m/Y') }} 
+        A LAS {{ \Carbon\Carbon::now()->setTimezone('America/Tegucigalpa')->format('h:i A') }}
+        @if ($datadirec->ErrData->TipoDeError == 'NIV')
+            <div style="font-size: 13.636px; margin-top: -2px;">(NO ES EL ÚLTIMO DOCUMENTO VIGENTE)</div>
+        @else
+            <div style="font-size: 13.636px; margin-top: -2px;">(ES EL ÚLTIMO DOCUMENTO VIGENTE)</div>
+        @endif
+</div>
+
     </div>
   </div>
 </body>
