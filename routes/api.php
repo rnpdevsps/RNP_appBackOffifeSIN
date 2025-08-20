@@ -1,0 +1,88 @@
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\BlogController;
+
+use App\Http\Controllers\Api\WSController;
+use App\Http\Controllers\Api\WSKioskosController;
+use App\Http\Controllers\Api\ArbolGenealogicoController;
+use App\Http\Controllers\Api\CodexController;
+use App\Http\Controllers\Api\SendEmailAppController;
+use App\Http\Middleware\ValidateApiKey;
+use App\Http\Controllers\Api\DBLinkController;
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+
+Route::middleware([ValidateApiKey::class])->group(function () {
+
+    Route::get('blogs/{slug}/', [BlogController::class, 'viewBlog'])->name('view.blog');
+    
+    Route::get('obtenerNoticias', [BlogController::class, 'obtenerNoticias'])->name('obtenerNoticias');
+    Route::get('obtenerCategorias', [BlogController::class, 'obtenerCategorias'])->name('obtenerCategorias');
+
+    Route::get('obtenerPaises/{id?}', [DBLinkController::class, 'obtenerPaises'])->name('obtenerPaises');
+    Route::get('obtenerDepartamentos/{id?}', [DBLinkController::class, 'obtenerDepartamentos'])->name('obtenerDepartamentos');
+    Route::get('obtenerMunicipios/{id?}/{id2?}', [DBLinkController::class, 'obtenerMunicipios'])->name('obtenerMunicipios');
+    Route::get('obtenerBarrios/{id?}/{id2?}/{id3?}/{id4?}', [DBLinkController::class, 'obtenerBarrios'])->name('obtenerBarrios');
+    Route::get('obtenerGrupoEtnicos/{id?}', [DBLinkController::class, 'obtenerGrupoEtnicos'])->name('obtenerGrupoEtnicos');
+    Route::get('obtenerParentesco/{id?}', [DBLinkController::class, 'obtenerParentesco'])->name('obtenerParentesco');
+    Route::post('obtenerCiudadano', [DBLinkController::class, 'obtenerCiudadano'])->name('obtenerCiudadano');
+    Route::get('obtenerGenero/{id?}', [DBLinkController::class, 'obtenerGenero'])->name('obtenerGenero');
+
+    Route::post('preregistro', [WSController::class, 'PreRegistroNNA'])->name('preregistro');
+    Route::get('obtenerPreRegistroNNA/{id}', [WSController::class, 'obtenerPreRegistroNNA'])->name('obtenerPreRegistroNNA');
+
+    Route::post('obtenerIdentidadxCodigoBarras', [WSController::class, 'obtenerIdentidadxCodigoBarras'])->name('obtenerIdentidadxCodigoBarras');
+    Route::get('obtenerCertificadoNacimiento/{id}', [WSController::class, 'obtenerCertificadoNacimiento'])->name('obtenerCertificadoNacimiento');
+    Route::get('obtenerInscripcionNacimiento/{id}', [WSController::class, 'obtenerInscripcionNacimiento'])->name('obtenerInscripcionNacimiento');
+    Route::get('obtenerArbolGenealogico/{id}', [WSController::class, 'obtenerArbolGenealogico'])->name('obtenerArbolGenealogico');
+    Route::post('obtenerComparaFotoInscrito', [WSController::class, 'obtenerComparaFotoInscrito'])->name('obtenerComparaFotoInscrito');
+    Route::get('obtenerInfoCompletaInscripcion/{id}', [WSController::class, 'obtenerInfoCompletaInscripcion'])->name('obtenerInfoCompletaInscripcion');
+
+    Route::get('validaciondni/{id}', [WSController::class, 'obtenerValidacionDNI'])->name('validaciondni');
+
+    Route::post('validarhuella', [WSHuellaController::class, 'store'])->name('validarhuella');
+    Route::post('sendmail', [SendEmailAppController::class, 'sendmail'])->name('sendmail');
+
+    Route::get('RevisionArbolxPadre/{id}', [ArbolGenealogicoController::class, 'RevisionArbolxPadre'])->name('RevisionArbolxPadre');
+    Route::get('RevisionArbolxInscripcion/{id}', [ArbolGenealogicoController::class, 'RevisionArbolxInscripcion'])->name('RevisionArbolxInscripcion');
+    Route::post('ActualizarRevisionArbolGen', [ArbolGenealogicoController::class, 'ActualizarRevisionArbolGen'])->name('ActualizarRevisionArbolGen');
+    Route::post('ObtenerExpedientes', [CodexController::class, 'ObtenerExpedientes'])->name('ObtenerExpedientes');
+
+
+    Route::group(['prefix' => 'kiosko'], function () {
+        Route::get('listakioskos', [WSKioskosController::class, 'ListaKioskos'])->name('listakioskos');
+        Route::get('defunciones/{id}', [WSKioskosController::class, 'DefuncionesKiosko'])->name('defunciones');
+        Route::get('matrimonios/{id}', [WSKioskosController::class, 'MatrimoniosKiosko'])->name('matrimonios');
+        Route::get('ArbolGenealogico/{id}', [WSKioskosController::class, 'ArbolGenealogicoKiosko'])->name('ArbolGenealogico');
+        Route::post('ComparaFotoInscrito', [WSKioskosController::class, 'ComparaFotoInscritoKiosko'])->name('ComparaFotoInscrito');
+        Route::post('ComparaHuellaInscrito', [WSKioskosController::class, 'ComparaHuellaInscritoKiosko'])->name('ComparaHuellaInscrito');
+        Route::post('CertificadoMatrimonio', [WSKioskosController::class, 'CertificadoMatrimonioKiosko'])->name('CertificadoMatrimonio');
+        Route::get('lugaresentregadni/{id}', [WSKioskosController::class, 'LugaresdeEntregaDNIKiosko'])->name('lugaresentregadni');
+        Route::get('RecuperarUltimoDNI/{id}', [WSKioskosController::class, 'RecuperarUltimoDNIKiosko'])->name('RecuperarUltimoDNI');
+        Route::post('crearReciboTGR', [WSKioskosController::class, 'crearReciboTGRKiosko'])->name('crearReciboTGR');
+        Route::post('RecuperarReciboTGR', [WSKioskosController::class, 'RecuperarReciboTGR1Kiosko'])->name('RecuperarReciboTGR');
+        Route::post('CertificadoDefuncion', [WSKioskosController::class, 'CertificadoDefuncionKiosko'])->name('CertificadoDefuncion');
+        Route::post('ValidarReciboTGR1ConOrigen', [WSKioskosController::class, 'ValidarReciboTGR1ConOrigenKiosko'])->name('ValidarReciboTGR1ConOrigen');
+        Route::post('ComprobanteReposicionDNI', [WSKioskosController::class, 'ComprobanteReposicionDNIKiosko'])->name('ComprobanteReposicionDNI');
+        Route::post('ReimpresionReposicionDNI', [WSKioskosController::class, 'ReimpresionReposicionDNIKiosko'])->name('ReimpresionReposicionDNI');
+
+
+
+    });
+
+});
