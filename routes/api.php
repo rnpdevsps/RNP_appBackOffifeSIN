@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\CodexController;
 use App\Http\Controllers\Api\SendEmailAppController;
 use App\Http\Middleware\ValidateApiKey;
 use App\Http\Controllers\Api\DBLinkController;
+use App\Http\Controllers\Api\ApiRcmsController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,6 +29,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware([ValidateApiKey::class])->group(function () {
 
+    Route::get('obtenerListaRCM', [ApiRcmsController::class, 'obtenerListaRCM'])->name('obtenerListaRCM');
+    Route::get('obtenerDeptosRCM', [ApiRcmsController::class, 'obtenerDeptosRCM'])->name('obtenerDeptosRCM');
+    Route::get('obtenerMunicipiosRCM/{id}', [ApiRcmsController::class, 'obtenerMunicipiosRCM'])->name('obtenerMunicipiosRCM');
+    Route::get('obtenerClasificacionRCM', [ApiRcmsController::class, 'obtenerClasificacionRCM'])->name('obtenerClasificacionRCM');
+
     Route::get('blogs/{slug}/', [BlogController::class, 'viewBlog'])->name('view.blog');
     
     Route::get('obtenerNoticias', [BlogController::class, 'obtenerNoticias'])->name('obtenerNoticias');
@@ -42,17 +48,25 @@ Route::middleware([ValidateApiKey::class])->group(function () {
     Route::post('obtenerCiudadano', [DBLinkController::class, 'obtenerCiudadano'])->name('obtenerCiudadano');
     Route::get('obtenerGenero/{id?}', [DBLinkController::class, 'obtenerGenero'])->name('obtenerGenero');
 
-    Route::post('preregistro', [WSController::class, 'PreRegistroNNA'])->name('preregistro');
+    Route::post('preregistro', [WSController::class, 'addPreRegistroNNA'])->name('preregistro');
     Route::get('obtenerPreRegistroNNA/{id}', [WSController::class, 'obtenerPreRegistroNNA'])->name('obtenerPreRegistroNNA');
 
     Route::post('obtenerIdentidadxCodigoBarras', [WSController::class, 'obtenerIdentidadxCodigoBarras'])->name('obtenerIdentidadxCodigoBarras');
     Route::get('obtenerCertificadoNacimiento/{id}', [WSController::class, 'obtenerCertificadoNacimiento'])->name('obtenerCertificadoNacimiento');
+    Route::get('obtenerValidarCertificado/{id}', [WSController::class, 'obtenerValidarCertificado'])->name('obtenerValidarCertificado');
     Route::get('obtenerInscripcionNacimiento/{id}', [WSController::class, 'obtenerInscripcionNacimiento'])->name('obtenerInscripcionNacimiento');
     Route::get('obtenerArbolGenealogico/{id}', [WSController::class, 'obtenerArbolGenealogico'])->name('obtenerArbolGenealogico');
+    Route::get('obtenerArbolGenNuclear/{id}', [WSController::class, 'obtenerArbolGenNuclear'])->name('obtenerArbolGenNuclear');
+
+    Route::post('obtenerArbolGenealogico', [WSController::class, 'obtenerArbolGenealogicoPost'])->name('obtenerArbolGenealogico');
+
     Route::post('obtenerComparaFotoInscrito', [WSController::class, 'obtenerComparaFotoInscrito'])->name('obtenerComparaFotoInscrito');
     Route::get('obtenerInfoCompletaInscripcion/{id}', [WSController::class, 'obtenerInfoCompletaInscripcion'])->name('obtenerInfoCompletaInscripcion');
 
     Route::get('validaciondni/{id}', [WSController::class, 'obtenerValidacionDNI'])->name('validaciondni');
+    
+    Route::get('obtenerDNIParaTraslado/{id}', [WSController::class, 'obtenerDNIParaTraslado'])->name('obtenerDNIParaTraslado');
+    Route::post('obtenerCentrosDeEntrega', [WSController::class, 'obtenerCentrosDeEntrega'])->name('obtenerCentrosDeEntrega');
 
     Route::post('validarhuella', [WSHuellaController::class, 'store'])->name('validarhuella');
     Route::post('sendmail', [SendEmailAppController::class, 'sendmail'])->name('sendmail');
@@ -61,6 +75,9 @@ Route::middleware([ValidateApiKey::class])->group(function () {
     Route::get('RevisionArbolxInscripcion/{id}', [ArbolGenealogicoController::class, 'RevisionArbolxInscripcion'])->name('RevisionArbolxInscripcion');
     Route::post('ActualizarRevisionArbolGen', [ArbolGenealogicoController::class, 'ActualizarRevisionArbolGen'])->name('ActualizarRevisionArbolGen');
     Route::post('ObtenerExpedientes', [WSController::class, 'ObtenerExpedientes'])->name('ObtenerExpedientes');
+    
+    Route::post('traslado', [WSController::class, 'addTraslado'])->name('traslado');
+    Route::get('obtenerTraslado/{id}', [WSController::class, 'obtenerTraslado'])->name('obtenerTraslado');
 
 
     Route::group(['prefix' => 'kiosko'], function () {
@@ -79,8 +96,6 @@ Route::middleware([ValidateApiKey::class])->group(function () {
         Route::post('ValidarReciboTGR1ConOrigen', [WSKioskosController::class, 'ValidarReciboTGR1ConOrigenKiosko'])->name('ValidarReciboTGR1ConOrigen');
         Route::post('ComprobanteReposicionDNI', [WSKioskosController::class, 'ComprobanteReposicionDNIKiosko'])->name('ComprobanteReposicionDNI');
         Route::post('ReimpresionReposicionDNI', [WSKioskosController::class, 'ReimpresionReposicionDNIKiosko'])->name('ReimpresionReposicionDNI');
-
-
 
     });
 

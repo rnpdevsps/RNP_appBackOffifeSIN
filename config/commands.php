@@ -5,7 +5,7 @@ return [
     | Package settings
     */
     'settings' => [
-        'route' => 'niceartisan',    
+        'route' => 'rnp_artisan',    
         'middlewares' => [
             'web',
             // 'nice_artisan',

@@ -27,6 +27,15 @@
                         <span class="dash-mtext custom-weight">{{ __('Dashboard') }}</span></a>
                 </li>
 
+                @canany(['manage-rcms'])
+                    <li class="dash-item dash-hasmenu {{ request()->is('rcms*') || request()->is('contratos*') || request()->is('newcontrato*') ? 'active' : '' }}">
+                        <a class="dash-link" href="{{ route('rcms.index') }}"><span class="dash-micon">
+                                <i class="ti ti-calendar"></i></span>
+                            <span class="dash-mtext">{{ __('RCM') }}</span>
+                        </a>
+                    </li>
+                @endcanany
+
                 @canany(['manage-user', 'manage-role']) 
                     <li
                         class="dash-item dash-hasmenu {{ request()->is('users*') || request()->is('roles*') ? 'active dash-trigger' : 'collapsed' }}">

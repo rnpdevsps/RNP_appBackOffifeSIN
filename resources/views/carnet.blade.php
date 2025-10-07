@@ -97,7 +97,7 @@
 
       <div class="salto"></div>
       <div>
-      <span class="value"  style="font-size: 21.9641px; font-family: 'Montserrat', sans-serif; font-weight: 800;">{{ $datadirec->Nombres }}</span><br>
+      <span class="value"  style="font-size: 21.9641px; font-family: 'Montserrat', sans-serif; font-weight: 800;">{{ $datadirec->Nombres }} {{ $datadirec->PrimerApellido }} {{ $datadirec->SegundoApellido }}</span><br>
       <span class="label">NOMBRE</span>      
       </div>
 

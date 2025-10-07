@@ -58,6 +58,7 @@ use App\Http\Controllers\ApiLogController;
 use App\Http\Controllers\ApiKeyController;
 
 use App\Http\Controllers\Api\WSController;
+use App\Http\Controllers\RcmsController;
 
 
 // use Omniphx\Forrest\Providers\Laravel\Facades\Forrest;
@@ -90,7 +91,21 @@ Route::group(['middleware' => ['auth', 'xss', 'Setting', 'verified', '2fa', 'ver
     
     Route::resource('apilog', ApiLogController::class)->except(['show']);
 
+    //para RCM
+    Route::get('obtenerMunicipiosPorDeptos/{id}', '\App\Http\Controllers\SearchController@obtenerMunicipiosPorDeptos');
+    Route::resource('rcms', RcmsController::class)->except(['show']);
+    Route::post('rcm/status/{id}', [RcmsController::class, 'rcmStatus'])->name('rcms.status');
+    Route::get('rcm/{id}', [RcmsController::class, 'inactivarRcm'])->name('rcms.inactivar');
+    Route::post('ChangeStatusRcm', [RcmsController::class, 'ChangeStatusRcm'])->name('ChangeStatusRcm');
+    Route::get('rcm/status/{id}', [RcmsController::class, 'rcmStatus'])->name('rcm.status');
+    Route::get('rcm/bitacora/{id}', [RcmsController::class, 'bitacora'])->name('rcm.bitacora');
+    Route::get('rcm/contratos/{id}', [RcmsController::class, 'contratos'])->name('rcm.contratos');
 
+    //Admin Sales Reports
+    Route::get('rcmreport', [ReportsController::class, 'rcmreport'])->name('rcmreport');
+    Route::post('report', [ReportsController::class, 'report'])->name('report');
+    Route::get('rcm/sales-report/export', [ReportsController::class, 'exportReport'])->name('rcm.contratos.export');
+    //Admin Sales Reports
 
     Route::resource('permission', PermissionController::class);
     Route::resource('roles', RoleController::class);

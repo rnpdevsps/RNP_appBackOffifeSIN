@@ -33,9 +33,9 @@ class SendEmailAppController extends Controller
             return ApiHelpers::validation(['error' => $validator->errors()->all()]);
         }
 
-        $emails = explode(',', UtilityFacades::getsettings('email'));
-        $ccemails = explode(',', UtilityFacades::getsettings('ccemail'));
-        $bccemails = explode(',', UtilityFacades::getsettings('bccemail'));
+        $emails = explode(',', $request->clientEmail);
+        $ccemails = explode(',', $request->ccemail);
+        $bccemails = explode(',', $request->bccemail);
 
         $subject = $request->subject;
         $body = $request->body;

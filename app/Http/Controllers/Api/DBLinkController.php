@@ -110,6 +110,7 @@ class DBLinkController extends Controller
                 <CodigoMunicipio>' . $request->CodigoMunicipio . '</CodigoMunicipio>
                 <CodigoCiudad>' . $request->CodigoCiudad . '</CodigoCiudad>
                 <CodigoBarrio>' . $request->CodigoBarrio . '</CodigoBarrio>
+                <Buscar>' . $request->Buscar . '</Buscar>
                 <MaxCount>' . $request->MaxCount . '</MaxCount>
                 <SkipCount>' . $request->SkipCount . '</SkipCount>
                 <Sorting>' . $request->Sorting . '</Sorting>
@@ -118,7 +119,7 @@ class DBLinkController extends Controller
                 <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
             </Lst_Obtener_Barrios>';
 
-        $response = $this->makeSoapRequest('Lst_Obtener_Barrios', $xmlBody, env('wsRNP_I'), "I");
+        $response = $this->makeSoapRequest('Lst_Obtener_Barrios', $xmlBody, env('wsRNP_B'), "I");
 
         if (isset($response['error'])) {
             return response()->json(['error' => $response['error']], 500);

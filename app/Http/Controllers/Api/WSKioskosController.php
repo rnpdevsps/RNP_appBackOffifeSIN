@@ -103,7 +103,7 @@ class WSKioskosController extends Controller
     }
 
 
-    public function ListaKioskos()
+    public function ListaKioskosNOOOO()
     {
         $parametros = "
             <CodigoInstitucion>" . env('CodigoInstitucion') . "</CodigoInstitucion>
@@ -111,10 +111,29 @@ class WSKioskosController extends Controller
             <UsuarioInstitucion>" . env('UsuarioInstitucion') . "</UsuarioInstitucion>
         ";
         
-        $data = [$this->realizarSolicitudSOAP('lst_Kioscos', $parametros)];
+        $data = [$this->realizarSolicitudSOAP('Lst_Kioscos', $parametros)];
         $message = ['success' => [__('Lista de Kioskos')]];
         return ApiHelpers::success($data, $message);
     }
+    
+    public function ListaKioskos()
+    {
+        $xmlBody = '
+            <Lst_Kioscos xmlns="http://servicios.rnp.hn/">
+                <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
+                <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
+                <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
+            </Lst_Kioscos>';
+
+        $response = $this->makeSoapRequest('Lst_Kioscos', $xmlBody, env('wsRNP_I'), "I");
+
+        if (isset($response['error'])) {
+            return response()->json(['error' => $response['error']], 500);
+        }
+
+        return ApiHelpers::success([$response], ['success' => ['Lista Kioscos']]);
+    }
+    
 
 
     public function LugaresdeEntregaDNIKiosko($id = null)
@@ -441,6 +460,73 @@ $data = ['recibo' => $array];
         }
     
         return $responseBody->{$accion . 'Result'};
+    }
+    
+    
+    
+    /**
+     * Función genérica para hacer solicitudes SOAP
+     */
+    private function makeSoapRequest($action, $xmlBody, $wsdl, $ws)
+    {
+        if ($ws == 'I') {
+            $fields = '
+                <Envelope xmlns="http://www.w3.org/2003/05/soap-envelope">
+                    <Body>' . $xmlBody . '</Body>
+                </Envelope>';
+        } else {
+            $fields = '<?xml version="1.0" encoding="utf-8"?>
+                <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+                    <soap:Body>' . $xmlBody . '</soap:Body>
+                </soap:Envelope>';
+        }
+        
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $wsdl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => $fields,
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: text/xml; charset=utf-8',
+                'SOAPAction: "http://servicios.rnp.hn/' . $action . '"'
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+        if (curl_errno($curl)) {
+            $error_msg = curl_error($curl);
+            curl_close($curl);
+            return ['error' => "Error en la solicitud CURL: $error_msg"];
+        }
+
+        //die($response);
+        curl_close($curl);
+        return $this->parseSoapResponse($response, $action);
+    }
+
+    /**
+     * Procesar respuesta SOAP
+     */
+    private function parseSoapResponse($response, $action)
+    {
+        try {
+            $xml = simplexml_load_string($response);
+            $namespaces = $xml->getNamespaces(true);
+            $body = $xml->children($namespaces['soap'])->Body;
+            $responseBody = $body->children($namespaces[''])->{$action . 'Response'};
+
+            return $responseBody->{$action . 'Result'};
+        } catch (Exception $e) {
+            return ['error' => "Error procesando la respuesta XML: " . $e->getMessage()];
+        }
     }
 
 }

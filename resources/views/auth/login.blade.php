@@ -6,7 +6,7 @@
     ]);
 @endphp
 @extends('layouts.app-auth')
-@section('title', __('NUEVO'))
+@section('title', __('AppTest'))
 @section('content')
 
    <section class="wizard-section">

@@ -12,13 +12,6 @@ class ValidateApiKey
 {
     public function handle(Request $request, Closure $next)
     {
-        $start = microtime(true);
-        // Ejecutar la petición y obtener la respuesta
-        $response = $next($request);
-
-        $end = microtime(true);
-        $executionTime = round($end - $start, 4); // en segundos
-
         $apiKey = $request->header('X-API-KEY');
         if (!$apiKey) {
             return response()->json(['error' => 'API Key no proporcionada'], 401);
@@ -37,31 +30,17 @@ class ValidateApiKey
         // Verifica si la ruta actual está permitida
         $routeName = $request->route()->getName();
         $permissions = $key->permissions ?? [];
-        
-        $fullPath = $request->path(); // api/RevisionArbolxInscripcion/0501199503745
-        $segments = explode('/', $fullPath);
-        $serviceName = $segments[1] ?? null; // "RevisionArbolxInscripcion"
-
-
 
         if (!in_array($routeName, $permissions)) {
             // Registrar intento no autorizado por falta de permisos
             ApiLog::create([
                 'ip_address' => $request->ip(),
                 'endpoint' => $request->path(),
-                'service_name' => $serviceName,
                 'user_agent' => $request->header('User-Agent'),
                 'api_key' => $apiKey,
                 'request_data' => json_encode($request->all()),
                 'message' => 'Permiso denegado para la ruta: ' . $routeName,
                 'status' => 'fail',
-                'method'        => $request->method(),
-                'url'           => $request->fullUrl(),
-                'headers'       => $request->headers->all(),
-                'request_body'  => $request->all(),
-                'status_code'   => $response->getStatusCode(),
-                'response_body' => json_decode($response->getContent(), true),
-                'execution_time'=> $executionTime,
             ]);
         
             return response()->json(['error' => 'No tienes permiso para acceder la peticion.'], 403);
@@ -73,19 +52,11 @@ class ValidateApiKey
             ApiLog::create([
                 'ip_address' => $request->ip(),
                 'endpoint' => $request->path(),
-                'service_name' => $serviceName,
                 'user_agent' => $request->header('User-Agent'),
                 'api_key' => $apiKey,
                 'request_data' => json_encode($request->all()),
                 'status' => 'fail',
                 'message' => 'API Key expirada',
-                'method'        => $request->method(),
-                'url'           => $request->fullUrl(),
-                'headers'       => $request->headers->all(),
-                'request_body'  => $request->all(),
-                'status_code'   => $response->getStatusCode(),
-                'response_body' => json_decode($response->getContent(), true),
-                'execution_time'=> $executionTime,
             ]);
             return response()->json(['error' => 'API Key expirada'], 401);
         }
@@ -96,19 +67,11 @@ class ValidateApiKey
             ApiLog::create([
                 'ip_address' => $request->ip(),
                 'endpoint' => $request->path(),
-                'service_name' => $serviceName,
                 'user_agent' => $request->header('User-Agent'),
                 'api_key' => $apiKey,
                 'request_data' => json_encode($request->all()),
                 'message' => 'No Autorizado',
                 'status' => 'fail',
-                'method'        => $request->method(),
-                'url'           => $request->fullUrl(),
-                'headers'       => $request->headers->all(),
-                'request_body'  => $request->all(),
-                'status_code'   => $response->getStatusCode(),
-                'response_body' => json_decode($response->getContent(), true),
-                'execution_time'=> $executionTime,
             ]);
 
             return response()->json(['error' => 'No Autorizado'], 401);
@@ -118,19 +81,11 @@ class ValidateApiKey
         ApiLog::create([
             'ip_address' => $request->ip(),
             'endpoint' => $request->path(),
-            'service_name' => $serviceName,
             'user_agent' => $request->header('User-Agent'),
             'api_key' => $apiKey,
             'request_data' => json_encode($request->all()),
             'message' => 'Acceso Autorizado',
             'status' => 'success',
-            'method'        => $request->method(),
-            'url'           => $request->fullUrl(),
-            'headers'       => $request->headers->all(),
-            'request_body'  => $request->all(),
-            'status_code'   => $response->getStatusCode(),
-            'response_body' => json_decode($response->getContent(), true),
-            'execution_time'=> $executionTime,
         ]);
 
         return $next($request);

@@ -8,10 +8,12 @@ use Carbon\Carbon;
 use App\Http\Helpers\Api\Helpers as ApiHelpers;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Nnapren;
+use App\Models\Traslados;
 use App\Models\TerceroAsignado;
 use App\Models\TerceroVive;
 use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
-
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
 
 class WSController extends Controller
 {
@@ -161,80 +163,168 @@ class WSController extends Controller
 
     public function PreRegistroNNA(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'DNI_NNA' => 'required'
+        ], [
+            'DNI_NNA.required' => 'El campo DNI es obligatorio.',
         ]);
 
-        if($validator->fails()){
-            $error =  ['error'=>$validator->errors()->all()];
+        if ($validator->fails()) {
+            $error = ['error' => $validator->errors()->all()];
+            return ApiHelpers::validation($error);
+        }
+    
+        $existe = Nnapren::where('DNI_NNA', $request->DNI_NNA)->first();
+
+        if (!empty($existe)) {
+            $error = ['error' => [__("Ya existe una solicitud de pre-enrolamiento pendiente para este DNI.")]];
+            return ApiHelpers::validation($error);
+        } else {
+        
+            $input = $request->all();
+            $input['FchDeclaPreRegistroNNA']           =  Carbon::now()->toDateTimeString();
+            $input['EstadoDeclaPreRegistroNNA']        = "P";
+            $input['FechaProcesaDeclaPreRegistroNNA']  = Carbon::now()->toDateTimeString();
+
+            $datos = Nnapren::create($input);
+
+            if (!empty($input['tercero_a_dni'])) {
+                TerceroAsignado::create([
+                    'id_prenna'          => $datos->id,
+                    'dni'                => $input['tercero_a_dni'],
+                    'nombre'             => $input['tercero_a_nombre'] ?? null,
+                    'correo'             => $input['tercero_a_correo'] ?? null,
+                    'telefono'           => $input['tercero_a_telefono'] ?? null,
+                    'domicilio_completo' => $input['tercero_a_domicilio_completo'] ?? null,
+                    'departamento_code'  => $input['tercero_a_departamento_code'] ?? null,
+                    'departamento_label' => $input['tercero_a_departamento_label'] ?? null,
+                    'municipio_code'     => $input['tercero_a_municipio_code'] ?? null,
+                    'municipio_label'    => $input['tercero_a_municipio_label'] ?? null,
+                    'city_code'          => $input['tercero_a_city_code'] ?? null,
+                    'city_label'         => $input['tercero_a_city_label'] ?? null,
+                    'barrio_code'        => $input['tercero_a_barrio_code'] ?? null,
+                    'barrio_label'       => $input['tercero_a_barrio_label'] ?? null,
+                    'direccion_exacta'   => $input['tercero_a_direccion_exacta'] ?? null,
+                ]);
+            }
+
+            if (!empty($input['tercero_v_dni'])) {
+                TerceroVive::create([
+                    'id_prenna'          => $datos->id,
+                    'dni'                => $input['tercero_v_dni'],
+                    'nombre'             => $input['tercero_v_nombre'] ?? null,
+                    'correo'             => $input['tercero_v_correo'] ?? null,
+                    'telefono'           => $input['tercero_v_telefono'] ?? null,
+                    'domicilio_completo' => $input['tercero_v_domicilio_completo'] ?? null,
+                    'departamento_code'  => $input['tercero_v_departamento_code'] ?? null,
+                    'departamento_label' => $input['tercero_v_departamento_label'] ?? null,
+                    'municipio_code'     => $input['tercero_v_municipio_code'] ?? null,
+                    'municipio_label'    => $input['tercero_v_municipio_label'] ?? null,
+                    'city_code'          => $input['tercero_v_city_code'] ?? null,
+                    'city_label'         => $input['tercero_v_city_label'] ?? null,
+                    'barrio_code'        => $input['tercero_v_barrio_code'] ?? null,
+                    'barrio_label'       => $input['tercero_v_barrio_label'] ?? null,
+                    'direccion_exacta'   => $input['tercero_v_direccion_exacta'] ?? null,
+                ]);
+            }
+
+            // Construir la respuesta con solo el ID y otro campo
+            $data = [
+                'PreRegistroNNA' => [
+                    'id' => $datos->id, // ID del registro
+                    'dni_nna' => $datos->DNI_NNA, // Otro campo específico
+                ]
+            ];
+            $message =  ['success'=>[__('Registro Exitoso')]];
+            return ApiHelpers::success($data, $message);
+        }
+    }
+
+    public function addPreRegistroNNA(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'DNI_NNA' => 'required'
+        ], [
+            'DNI_NNA.required' => 'El campo DNI es obligatorio.',
+        ]);
+
+        if ($validator->fails()) {
+            $error = ['error' => $validator->errors()->all()];
             return ApiHelpers::validation($error);
         }
 
-        $nnapren = Nnapren::where('DNI_NNA',$request->DNI_NNA)->first();
-        if($nnapren){
-            $error = ['error'=>[__("Ya existe una solicitud de pre-enrolamiento para este DNI.")]];
+
+        $existe = Nnapren::where('DNI_NNA', $request->DNI_NNA)->first();
+        if ($existe) {
+            Log::warning('SI Existe Registro DNI_NNA: ', [
+                'DNI' => $request->DNI_NNA,
+            ]);
+
+            $error = ['error' => [__("Ya existe una solicitud de pre-enrolamiento pendiente para este DNI.")]];
             return ApiHelpers::validation($error);
+        } else {
+        Log::warning('NO Existe Registro DNI_NNA: ', [
+                'DNI' => $request->DNI_NNA,
+            ]);
+
+            $input = $request->all();
+            $input['FchDeclaPreRegistroNNA']           =  Carbon::now()->toDateTimeString();
+            $input['EstadoDeclaPreRegistroNNA']        = "P";
+            $input['FechaProcesaDeclaPreRegistroNNA']  = Carbon::now()->toDateTimeString();
+
+            $datos = Nnapren::create($input);
+
+            if (!empty($input['tercero_a_dni'])) {
+                TerceroAsignado::create([
+                    'id_prenna'          => $datos->id,
+                    'dni'                => $input['tercero_a_dni'],
+                    'nombre'             => $input['tercero_a_nombre'] ?? null,
+                    'correo'             => $input['tercero_a_correo'] ?? null,
+                    'telefono'           => $input['tercero_a_telefono'] ?? null,
+                    'domicilio_completo' => $input['tercero_a_domicilio_completo'] ?? null,
+                    'departamento_code'  => $input['tercero_a_departamento_code'] ?? null,
+                    'departamento_label' => $input['tercero_a_departamento_label'] ?? null,
+                    'municipio_code'     => $input['tercero_a_municipio_code'] ?? null,
+                    'municipio_label'    => $input['tercero_a_municipio_label'] ?? null,
+                    'city_code'          => $input['tercero_a_city_code'] ?? null,
+                    'city_label'         => $input['tercero_a_city_label'] ?? null,
+                    'barrio_code'        => $input['tercero_a_barrio_code'] ?? null,
+                    'barrio_label'       => $input['tercero_a_barrio_label'] ?? null,
+                    'direccion_exacta'   => $input['tercero_a_direccion_exacta'] ?? null,
+                ]);
+            }
+
+            if (!empty($input['tercero_v_dni'])) {
+                TerceroVive::create([
+                    'id_prenna'          => $datos->id,
+                    'dni'                => $input['tercero_v_dni'],
+                    'nombre'             => $input['tercero_v_nombre'] ?? null,
+                    'correo'             => $input['tercero_v_correo'] ?? null,
+                    'telefono'           => $input['tercero_v_telefono'] ?? null,
+                    'domicilio_completo' => $input['tercero_v_domicilio_completo'] ?? null,
+                    'departamento_code'  => $input['tercero_v_departamento_code'] ?? null,
+                    'departamento_label' => $input['tercero_v_departamento_label'] ?? null,
+                    'municipio_code'     => $input['tercero_v_municipio_code'] ?? null,
+                    'municipio_label'    => $input['tercero_v_municipio_label'] ?? null,
+                    'city_code'          => $input['tercero_v_city_code'] ?? null,
+                    'city_label'         => $input['tercero_v_city_label'] ?? null,
+                    'barrio_code'        => $input['tercero_v_barrio_code'] ?? null,
+                    'barrio_label'       => $input['tercero_v_barrio_label'] ?? null,
+                    'direccion_exacta'   => $input['tercero_v_direccion_exacta'] ?? null,
+                ]);
+            }
+
+            // Construir la respuesta con solo el ID y otro campo
+            $data = [
+                'PreRegistroNNA' => [
+                    'id' => $datos->id, // ID del registro
+                    'dni_nna' => $datos->DNI_NNA, // Otro campo específico
+                ]
+            ];
+            $message =  ['success'=>[__('Registro Exitoso')]];
+            return ApiHelpers::success($data, $message);
         }
-
-        $input = $request->all();
-        $input['FchDeclaPreRegistroNNA']           =  Carbon::now()->toDateTimeString();
-        $input['EstadoDeclaPreRegistroNNA']        = "P";
-        $input['FechaProcesaDeclaPreRegistroNNA']  = Carbon::now()->toDateTimeString();
-
-        $datos = Nnapren::create($input);
-        
-        // Crear el registro TerceroAsignado
-        $terceroAsignadoData = [
-            'id_prenna'          => $datos->id,
-            'dni'                => $input['tercero_a_dni'] ?? null,
-            'nombre'             => $input['tercero_a_nombre'] ?? null,
-            'correo'             => $input['tercero_a_correo'] ?? null,
-            'telefono'           => $input['tercero_a_telefono'] ?? null,
-            'domicilio_completo' => $input['tercero_a_domicilio_completo'] ?? null,
-            'departamento_code'  => $input['tercero_a_departamento_code'] ?? null,
-            'departamento_label' => $input['tercero_a_departamento_label'] ?? null,
-            'municipio_code'     => $input['tercero_a_municipio_code'] ?? null,
-            'municipio_label'    => $input['tercero_a_municipio_label'] ?? null,
-            'city_code'          => $input['tercero_a_city_code'] ?? null,
-            'city_label'         => $input['tercero_a_city_label'] ?? null,
-            'barrio_code'        => $input['tercero_a_barrio_code'] ?? null,
-            'barrio_label'       => $input['tercero_a_barrio_label'] ?? null,
-            'direccion_exacta'   => $input['tercero_a_direccion_exacta'] ?? null,
-        ];
-    
-        TerceroAsignado::create($terceroAsignadoData);
-        
-        // Crear el registro TerceroAsignado
-        $terceroViveData = [
-            'id_prenna'          => $datos->id,
-            'dni'                => $input['tercero_v_dni'] ?? null,
-            'nombre'             => $input['tercero_v_nombre'] ?? null,
-            'correo'             => $input['tercero_v_correo'] ?? null,
-            'telefono'           => $input['tercero_v_telefono'] ?? null,
-            'domicilio_completo' => $input['tercero_v_domicilio_completo'] ?? null,
-            'departamento_code'  => $input['tercero_v_departamento_code'] ?? null,
-            'departamento_label' => $input['tercero_v_departamento_label'] ?? null,
-            'municipio_code'     => $input['tercero_v_municipio_code'] ?? null,
-            'municipio_label'    => $input['tercero_v_municipio_label'] ?? null,
-            'city_code'          => $input['tercero_v_city_code'] ?? null,
-            'city_label'         => $input['tercero_v_city_label'] ?? null,
-            'barrio_code'        => $input['tercero_v_barrio_code'] ?? null,
-            'barrio_label'       => $input['tercero_v_barrio_label'] ?? null,
-            'direccion_exacta'   => $input['tercero_v_direccion_exacta'] ?? null,
-        ];
-    
-        TerceroVive::create($terceroViveData);
-
-        // Construir la respuesta con solo el ID y otro campo
-        $data = [
-            'PreRegistroNNA' => [
-                'id' => $datos->id, // ID del registro
-                'dni_nna' => $datos->DNI_NNA, // Otro campo específico
-            ]
-        ];
-        $message =  ['success'=>[__('Registro Exitoso')]];
-        return ApiHelpers::success($data, $message);
-
     }
 
 
@@ -253,6 +343,85 @@ class WSController extends Controller
         $message = ['success' => [__('PreRegistroNNA')]];
         return ApiHelpers::success($data, $message);
     }
+    
+    public function addTraslado(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'dni' => 'required'
+        ], [
+            'dni.required' => 'El campo DNI es obligatorio.',
+        ]);
+
+        if ($validator->fails()) {
+            $error = ['error' => $validator->errors()->all()];
+            return ApiHelpers::validation($error);
+        }
+
+
+        $existe = Traslados::where('dni', $request->dni)->where('estatus', 1)->first();
+        if ($existe) {
+            $error = ['error' => [__("Ya existe una solicitud de traslado pendiente para este DNI.")]];
+            return ApiHelpers::validation($error);
+        } else {
+       
+            $input = $request->all();
+            $input['fecha_inicio_gestion']           =  Carbon::now()->toDateTimeString();
+            $input['estatus']        = 1; // 1 pendiente
+
+            $datos = Traslados::create($input);
+
+            // Construir la respuesta con solo el ID y otro campo
+            $data = [
+                'Traslado' => [
+                    'id' => $datos->id, // ID del registro
+                    'dni' => $datos->dni, // Otro campo específico
+                ]
+            ];
+            $message =  ['success'=>[__('Registro de Traslado Exitoso')]];
+            return ApiHelpers::success($data, $message);
+        }
+    }
+    
+    public function obtenerTraslado($id = null)
+    {
+        if (empty($id)) {
+            $error = ['error' => [__('Ingresar el DNI a consultar.')]];
+            return ApiHelpers::validation($error);
+        }
+    
+        $traslado = Traslados::select(
+            'dni',
+            'num_secuencia',
+            'codigo_departamento_origen',
+            'nombre_departamento_origen',
+            'codigo_municipio_origen',
+            'nombre_municipio_origen',
+            'codigo_centro_entrega_origen',
+            'nombre_centro_entrega_origen',
+            'codigo_departamento_destino',
+            'nombre_departamento_destino',
+            'codigo_municipio_destino',
+            'nombre_municipio_destino',
+            'codigo_centro_entrega_destino',
+            'nombre_centro_entrega_destino',
+            'correo',
+            'telefono',
+            'fecha_inicio_gestion',
+            'estatus'
+        )
+        ->where('dni', $id)
+        ->first();
+    
+        if (!$traslado) {
+            $error = ['error' => [__('No se encontró traslado con ese DNI.')]];
+            return ApiHelpers::validation($error);
+        }
+    
+        $data = ['Traslado' => $traslado];
+        $message = ['success' => [__('Traslado encontrado correctamente')]];
+        return ApiHelpers::success($data, $message);
+    }
+
 
 
 
@@ -275,6 +444,128 @@ class WSController extends Controller
 
         return ApiHelpers::success([$response], ['success' => ['Certificado Nacimiento']]);
     }
+    
+    public function obtenerValidarCertificado($id = null)
+    {
+        $xmlBody = '
+            <Qry_ValidarCertificado xmlns="http://servicios.rnp.hn/">
+                <codigoQR>http://qr.rnp.hn/validarcertificados.aspx?id=' . $id . '</codigoQR>
+                <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
+                <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
+                <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
+            </Qry_ValidarCertificado>';
+
+        $response = $this->makeSoapRequest('Qry_ValidarCertificado', $xmlBody, env('wsRNP_I'), "I");
+
+        if (isset($response['error'])) {
+            return response()->json(['error' => $response['error']], 500);
+        }
+
+        return ApiHelpers::success([$response], ['success' => ['Validar Certificado']]);
+    }
+    
+    
+    public function obtenerDNIParaTraslado($id = null)
+    {
+        $xmlBody = '
+            <Lst_Obtener_DNIParaTraslado xmlns="http://servicios.rnp.hn/">
+                <NumeroIdentidad>' . $id . '</NumeroIdentidad>
+                <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
+                <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
+                <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
+            </Lst_Obtener_DNIParaTraslado>';
+
+        $response = $this->makeSoapRequest('Lst_Obtener_DNIParaTraslado', $xmlBody, env('wsRNP_I'), "I");
+
+        if (isset($response['error'])) {
+            return response()->json(['error' => $response['error']], 500);
+        }
+        
+        
+        return ApiHelpers::success([$response], ['success' => ['DNI Para Traslado']]);
+    }
+    
+    public function obtenerCentrosDeEntrega(Request $request)
+    {
+        $xmlBody = '
+            <Lst_Obtener_CentrosDeEntrega xmlns="http://servicios.rnp.hn/">
+               <CodigoDepartamento>' . $request->CodigoDepartamento . '</CodigoDepartamento>
+                <CodigoMunicipio>' . $request->CodigoMunicipio . '</CodigoMunicipio>
+                <MaxCount>' . $request->MaxCount . '</MaxCount>
+                <SkipCount>' . $request->SkipCount . '</SkipCount>
+                <Sorting>' . $request->Sorting . '</Sorting>
+                <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
+                <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
+                <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
+            </Lst_Obtener_CentrosDeEntrega>';
+
+        $response = $this->makeSoapRequest('Lst_Obtener_CentrosDeEntrega', $xmlBody, env('wsRNP_I'), "I");
+
+        if (isset($response['error'])) {
+            return response()->json(['error' => $response['error']], 500);
+        }
+        
+        return ApiHelpers::success([$response], ['success' => ['Centros De Entrega']]);
+
+    }
+    
+    
+    public function obtenerValidarCertificadoNOOOO($id = null)
+    {
+
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => env('wsRNP_WebQR'),
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_SSL_VERIFYHOST => false,
+          CURLOPT_SSL_VERIFYPEER => false,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_POST => true,
+          CURLOPT_POSTFIELDS => '<?xml version="1.0" encoding="utf-8"?>
+        <soap12:Envelope xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+          <soap12:Body>
+            <tns:ValidarCertificado xmlns:tns="http://tempuri.org/">
+              <tns:titulo>' . $id . '</tns:titulo>
+            </tns:ValidarCertificado>
+          </soap12:Body>
+        </soap12:Envelope>',
+          CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/soap+xml; charset=utf-8'
+          ),
+        ));
+        
+        $response = curl_exec($curl);
+        
+        if (curl_errno($curl)) {
+            $error_msg = curl_error($curl);
+            curl_close($curl);
+            die("Error en la solicitud CURL: $error_msg");
+        }
+        
+        curl_close($curl);
+        
+        // Procesar la respuesta XML
+        try {
+            $xml = simplexml_load_string($response);
+            $namespaces = $xml->getNamespaces(true);
+            $body = $xml->children($namespaces['soap'])->Body;
+            $responseBody = $body->children($namespaces[''])->{'ValidarCertificadoResponse'};
+        } catch (Exception $e) {
+            die("Error procesando la respuesta XML: " . $e->getMessage());
+        }
+
+        $certificado = $responseBody->{'ValidarCertificadoResult'};
+
+        $data = ['Certificado' => $certificado];
+        $message = ['success' => [__('Validar Certificado')]];
+        return ApiHelpers::success($data, $message);
+
+    }
 
 
 
@@ -290,6 +581,44 @@ class WSController extends Controller
             </Qry_ArbolGenealogico>';
 
         $response = $this->makeSoapRequest('Qry_ArbolGenealogico', $xmlBody, env('wsRNP_I'), "I");
+
+        if (isset($response['error'])) {
+            return response()->json(['error' => $response['error']], 500);
+        }
+
+        return ApiHelpers::success([$response], ['success' => ['Arbol Genealogico']]);
+    }
+    
+    public function obtenerArbolGenNuclear($id = null)
+    {
+        $xmlBody = '
+            <Qry_ArbolGenNuclear xmlns="http://servicios.rnp.hn/">
+                <identidad>' . $id . '</identidad>
+                <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
+                <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
+                <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
+            </Qry_ArbolGenNuclear>';
+
+        $response = $this->makeSoapRequest('Qry_ArbolGenNuclear', $xmlBody, env('wsRNP_I'), "I");
+
+        if (isset($response['error'])) {
+            return response()->json(['error' => $response['error']], 500);
+        }
+
+        return ApiHelpers::success([$response], ['success' => ['Arbol Genealogico']]);
+    }
+
+    public function obtenerArbolGenealogicoPost(Request $request)
+    {
+        $xmlBody = '
+            <Qry_ArbolGenNuclear xmlns="http://servicios.rnp.hn/">
+                <identidad>' . $request->dni . '</identidad>
+                <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
+                <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
+                <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
+            </Qry_ArbolGenNuclear>';
+
+        $response = $this->makeSoapRequest('Qry_ArbolGenNuclear', $xmlBody, env('wsRNP_I'), "I");
 
         if (isset($response['error'])) {
             return response()->json(['error' => $response['error']], 500);
