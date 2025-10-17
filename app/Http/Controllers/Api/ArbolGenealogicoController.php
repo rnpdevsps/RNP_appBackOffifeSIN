@@ -15,7 +15,6 @@ class ArbolGenealogicoController extends Controller
     
     public function RevisionArbolxPadre($id = null)
     { 
-        
         $xmlBody = '
             <Lst_RevisionArbolxPadre xmlns="http://servicios.rnp.hn/">
                 <NumeroIdentidad>' . $id . '</NumeroIdentidad>
@@ -26,113 +25,31 @@ class ArbolGenealogicoController extends Controller
 
         $response = $this->makeSoapRequest('Lst_RevisionArbolxPadre', $xmlBody, env('wsRNP_I'), "I");
 
-        //die($response);
-
-        $dataArray = [];
-        $revData = $response->RevArbolData;
-        $dataArray['RevArbolData'] = [
-            'NumeroIdentidad'       => (string) $revData->NumeroIdentidad,
-            'Nombres'               => (string) $revData->Nombres,
-            'PrimerApellido'        => (string) $revData->PrimerApellido,
-            'FechaNacimiento'       => (string) $revData->FechaNacimiento,
-
-            'RPResultadoRevision'       => (string) $revData->RPResultadoRevision,
-            'RPNumeroIdentidad'     => (string) $revData->RPNumeroIdentidad,
-            'RPNombres'             => (string) $revData->RPNombres,
-            'RPPrimerApellido'      => (string) $revData->RPPrimerApellido,
-            'RPSegundoApellido'     => (string) $revData->RPSegundoApellido,
-            'RPFechaNacimiento'       => (string) $revData->RPFechaNacimiento,
-            'RPDescrDepartamento'     => (string) $revData->RPDescrDepartamento,
-            'RPDescrMunicipio'             => (string) $revData->RPDescrMunicipio,
-            'RMResultadoRevision'      => (string) $revData->RMResultadoRevision,
-            'RMNumeroIdentidad'     => (string) $revData->RMNumeroIdentidad,
-            'RMNombres'     => (string) $revData->RMNombres,
-            'RMPrimerApellido'     => (string) $revData->RMPrimerApellido,
-            'RMSegundoApellido'     => (string) $revData->RMSegundoApellido,
-            'RMFechaNacimiento'     => (string) $revData->RMFechaNacimiento,
-            'RMDescrDepartamento'     => (string) $revData->RMDescrDepartamento,
-            'RMDescrMunicipio'     => (string) $revData->RMDescrMunicipio,
-
-            'OrigenRevision'        => is_object($revData->OrigenRevision) ? '' : (string) $revData->OrigenRevision,
-            'RevisadoXCiudadano'    => (string) $revData->RevisadoXCiudadano,
-            'FechaRevision'         => is_object($revData->FechaRevision) ? '' : (string) $revData->FechaRevision,
-            'AprobadoXCiudadano'    => (string) $revData->AprobadoXCiudadano,
-            'ComentariosCiudadano'  => is_object($revData->ComentariosCiudadano) ? '' : (string) $revData->ComentariosCiudadano,
-            'ProcesadoXRNP'         => (string) $revData->ProcesadoXRNP,
-            'DetalleError' => [
-                'TipoDeError'       => (string) $revData->DetalleError->TipoDeError ?? '',
-                'DescripcionError'  => (string) $revData->DetalleError->DescripcionError ?? '',
-            ],
-        ];
-
-
         if (isset($response['error'])) {
             return response()->json(['error' => $response['error']], 500);
         }
 
-        return ApiHelpers::success([$dataArray], ['success' => ['Revision Arbol por Padre']]);
-    }
-    
-
-
-    public function RevisionArbolxPadreRESP($id = null)
-    {
-        $xmlBody = '
-            <Lst_RevisionArbolxPadre xmlns="http://tempuri.org/">
-                <NumeroIdentidad>' . $id . '</NumeroIdentidad>
-                <CodigoInstitucion>' . env('CodigoInstitucion') . '</CodigoInstitucion>
-                <CodigoSeguridad>' . env('CodigoSeguridad') . '</CodigoSeguridad>
-                <UsuarioInstitucion>' . env('UsuarioInstitucion') . '</UsuarioInstitucion>
-            </Lst_RevisionArbolxPadre>';
-
-        $response = $this->makeSoapRequest('Lst_RevisionArbolxPadre', $xmlBody, env('wsRNP_A')); 
-        
-
-
-        $dataArray = [];
-        $revData = $response->RevArbolData;
-        $dataArray['RevArbolData'] = [
-            'NumeroIdentidad'       => (string) $revData->NumeroIdentidad,
-            'Nombres'               => (string) $revData->Nombres,
-            'PrimerApellido'        => (string) $revData->PrimerApellido,
-            'FechaNacimiento'       => (string) $revData->FechaNacimiento,
-
-            'RPResultadoRevision'       => (string) $revData->RPResultadoRevision,
-            'RPNumeroIdentidad'     => (string) $revData->RPNumeroIdentidad,
-            'RPNombres'             => (string) $revData->RPNombres,
-            'RPPrimerApellido'      => (string) $revData->RPPrimerApellido,
-            'RPSegundoApellido'     => (string) $revData->RPSegundoApellido,
-            'RPFechaNacimiento'       => (string) $revData->RPFechaNacimiento,
-            'RPDescrDepartamento'     => (string) $revData->RPDescrDepartamento,
-            'RPDescrMunicipio'             => (string) $revData->RPDescrMunicipio,
-            'RMResultadoRevision'      => (string) $revData->RMResultadoRevision,
-            'RMNumeroIdentidad'     => (string) $revData->RMNumeroIdentidad,
-            'RMNombres'     => (string) $revData->RMNombres,
-            'RMPrimerApellido'     => (string) $revData->RMPrimerApellido,
-            'RMSegundoApellido'     => (string) $revData->RMSegundoApellido,
-            'RMFechaNacimiento'     => (string) $revData->RMFechaNacimiento,
-            'RMDescrDepartamento'     => (string) $revData->RMDescrDepartamento,
-            'RMDescrMunicipio'     => (string) $revData->RMDescrMunicipio,
-
-            'OrigenRevision'        => is_object($revData->OrigenRevision) ? '' : (string) $revData->OrigenRevision,
-            'RevisadoXCiudadano'    => (string) $revData->RevisadoXCiudadano,
-            'FechaRevision'         => is_object($revData->FechaRevision) ? '' : (string) $revData->FechaRevision,
-            'AprobadoXCiudadano'    => (string) $revData->AprobadoXCiudadano,
-            'ComentariosCiudadano'  => is_object($revData->ComentariosCiudadano) ? '' : (string) $revData->ComentariosCiudadano,
-            'ProcesadoXRNP'         => (string) $revData->ProcesadoXRNP,
-            'DetalleError' => [
-                'TipoDeError'       => (string) $revData->DetalleError->TipoDeError ?? '',
-                'DescripcionError'  => (string) $revData->DetalleError->DescripcionError ?? '',
-            ],
-        ];
-
-
-        if (isset($response['error'])) {
-            return response()->json(['error' => $response['error']], 500);
+        // Filtrar columnas no deseadas
+        if (isset($response['RevArbolData'])) {
+            foreach ($response['RevArbolData'] as &$item) {
+                unset(
+                    $item['OPTipoIdentidad'],
+                    $item['OPNumeroIdentidad'],
+                    $item['OPNombres'],
+                    $item['OPPrimerApellido'],
+                    $item['OMTipoIdentidad'],
+                    $item['OMNumeroIdentidad'],
+                    $item['OMNombres'],
+                    $item['OMPrimerApellido'],
+                    $item['TelefonoContacto'],
+                    $item['CorreoContacto']
+                );
+            }
         }
 
-        return ApiHelpers::success([$dataArray], ['success' => ['Revision Arbol por Padre']]);
+        return ApiHelpers::success([$response], ['success' => ['Revision Arbol por Padre']]);
     }
+
 
     public function RevisionArbolxInscripcion($id = null)
     {
@@ -147,47 +64,29 @@ class ArbolGenealogicoController extends Controller
 
         $response = $this->makeSoapRequest('Qry_RevisionArbolxInscripcion', $xmlBody, env('wsRNP_I'), "I");
 
-
-
-        $dataArray = [];
-        $revData = $response;
-        $dataArray = [
-            'NumeroIdentidad'       => (string) $revData->NumeroIdentidad,
-            'Nombres'               => (string) $revData->Nombres,
-            'PrimerApellido'        => (string) $revData->PrimerApellido,
-            'FechaNacimiento'       => (string) $revData->FechaNacimiento,
-
-            'RPResultadoRevision'       => (string) $revData->RPResultadoRevision,
-            'RPNumeroIdentidad'     => (string) $revData->RPNumeroIdentidad,
-            'RPNombres'             => (string) $revData->RPNombres,
-            'RPPrimerApellido'      => (string) $revData->RPPrimerApellido,
-            'RPSegundoApellido'     => (string) $revData->RPSegundoApellido,
-            'RPFechaNacimiento'       => (string) $revData->RPFechaNacimiento,
-            'RPDescrDepartamento'     => (string) $revData->RPDescrDepartamento,
-            'RPDescrMunicipio'             => (string) $revData->RPDescrMunicipio,
-            'RMResultadoRevision'      => (string) $revData->RMResultadoRevision,
-            'RMNumeroIdentidad'     => (string) $revData->RMNumeroIdentidad,
-            'RMNombres'     => (string) $revData->RMNombres,
-            'RMPrimerApellido'     => (string) $revData->RMPrimerApellido,
-            'RMSegundoApellido'     => (string) $revData->RMSegundoApellido,
-            'RMFechaNacimiento'     => (string) $revData->RMFechaNacimiento,
-            'RMDescrDepartamento'     => (string) $revData->RMDescrDepartamento,
-            'RMDescrMunicipio'     => (string) $revData->RMDescrMunicipio,
-
-            'OrigenRevision'        => is_object($revData->OrigenRevision) ? '' : (string) $revData->OrigenRevision,
-            'RevisadoXCiudadano'    => (string) $revData->RevisadoXCiudadano,
-            'FechaRevision'         => is_object($revData->FechaRevision) ? '' : (string) $revData->FechaRevision,
-            'AprobadoXCiudadano'    => (string) $revData->AprobadoXCiudadano,
-            'ComentariosCiudadano'  => is_object($revData->ComentariosCiudadano) ? '' : (string) $revData->ComentariosCiudadano,
-            'ProcesadoXRNP'         => (string) $revData->ProcesadoXRNP,
-            'DetalleError' => is_object($revData->DetalleError) ? '' : (string) $revData->DetalleError,
-        ];
-
         if (isset($response['error'])) {
             return response()->json(['error' => $response['error']], 500);
         }
 
-        return ApiHelpers::success([$dataArray], ['success' => ['Revision Arbol por Inscripcion']]);
+        // Filtrar columnas no deseadas
+        if (isset($response['RevArbolData'])) {
+            foreach ($response['RevArbolData'] as &$item) {
+                unset(
+                    $item['OPTipoIdentidad'],
+                    $item['OPNumeroIdentidad'],
+                    $item['OPNombres'],
+                    $item['OPPrimerApellido'],
+                    $item['OMTipoIdentidad'],
+                    $item['OMNumeroIdentidad'],
+                    $item['OMNombres'],
+                    $item['OMPrimerApellido'],
+                    $item['TelefonoContacto'],
+                    $item['CorreoContacto']
+                );
+            }
+        }
+
+        return ApiHelpers::success([$response], ['success' => ['Revision Arbol por Inscripcion']]);
     }
 
     public function ActualizarRevisionArbolGen(Request $request)

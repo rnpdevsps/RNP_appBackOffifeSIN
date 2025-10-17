@@ -125,6 +125,11 @@ Route::group(['middleware' => ['auth', 'xss', 'Setting', 'verified', '2fa', 'ver
     Route::get('forms/use/template/{id}', [FormController::class, 'useFormtemplate'])->name('forms.use.template');
 
     Route::get('/logs', [ApiLogController::class, 'index']);
+    Route::get('/monitor/logs', [ApiLogController::class, 'index'])->name('logs.index');
+    Route::get('/monitor/logs/fetch', [ApiLogController::class, 'fetch'])->name('logs.fetch');
+    Route::get('/logs/{uuid}/request', [ApiLogController::class, 'getRequestBody'])->name('logs.request');
+    Route::get('/logs/{uuid}/response', [ApiLogController::class, 'getResponseBody'])->name('logs.response');
+
     
     // salesforce. authentication
     Route::get('/authenticate', function () {

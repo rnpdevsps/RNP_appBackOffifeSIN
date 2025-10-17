@@ -119,6 +119,12 @@
                                         href="{{ route('apikey.index') }}">{{ __('Apikey') }}</a>
                                 </li>
                             @endcan
+                            @can('manage-apilog')
+                                <li class="dash-item {{ request()->is('apilog*') ? 'active' : '' }}">
+                                    <a class="dash-link"
+                                        href="{{ route('apilog.index') }}">{{ __('Api Log') }}</a>
+                                </li>
+                            @endcan
                              @can('manage-module')
                                 <li class="dash-item {{ request()->is('module*') ? 'active' : '' }}">
                                     <a class="dash-link"

@@ -21,7 +21,10 @@ class ApiLog extends Model
         'request_body',
         'status_code', 
         'response_body', 
-        'execution_time'
+        'execution_time',
+        'http_status',
+        'execution_time_ms',
+        'uuid'
     ];
     
     protected $casts = [

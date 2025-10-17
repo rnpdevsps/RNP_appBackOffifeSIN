@@ -699,7 +699,6 @@ class WSController extends Controller
         if (isset($datadirec['error'])) {
             return response()->json(['error' => $datadirec['error']], 500);
         }
-
         
 
         $xmlBodyFoto = '

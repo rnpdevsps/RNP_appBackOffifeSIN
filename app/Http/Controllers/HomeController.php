@@ -29,6 +29,8 @@ class HomeController extends Controller
 
     public function landingPage()
     {
+        \DB::disconnect('oracle');
+
         return redirect()->route('login');
         
     }

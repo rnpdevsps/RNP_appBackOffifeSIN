@@ -54,9 +54,9 @@ return [
     |
     */
 
-    'url' => "https://apptest.rnp.hn",
+    'url' => "https://app.rnp.hn",
 
-    'asset_url' => env('ASSET_URL'),
+    'asset_url' => "https://app.rnp.hn",
 
     /*
     |--------------------------------------------------------------------------
@@ -69,7 +69,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'America/Tegucigalpa',
+
 
     /*
     |--------------------------------------------------------------------------

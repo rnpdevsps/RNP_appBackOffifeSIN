@@ -10,6 +10,7 @@ use DB;
 use Hash;
 use Illuminate\Support\Str;
 use App\Models\ApiLog;
+use App\Http\Helpers\Api\RouteHelper;
 
 class ApiLogController extends Controller
 {
@@ -21,12 +22,87 @@ class ApiLogController extends Controller
         $this->middleware('permission:delete-apilog', ['only' => ['destroy']]);
     }
 
-    public function index(ApiLogDataTable $dataTable)
+    /*public function index(ApiLogDataTable $dataTable)
     {
         return $dataTable->render('apilog.index');
+    }*/
+
+    public function index(Request $request)
+    {
+        $permisosDisponibles = RouteHelper::getApiRouteNames();
+    
+        $logs = ApiLog::query()
+            ->when($request->filled('from'), fn($q) => $q->whereDate('created_at', '>=', $request->from))
+            ->when($request->filled('to'), fn($q) => $q->whereDate('created_at', '<=', $request->to))
+            ->when($request->filled('method'), fn($q) => $q->where('method', $request->method))
+            ->when($request->filled('status'), fn($q) => $q->where('status', $request->status))
+            ->when($request->filled('service_name'), fn($q) => $q->where('service_name', $request->service_name))
+            ->when($request->filled('http_status'), function ($q) use ($request) {
+                if ($request->http_status == '2') $q->whereBetween('http_status', [200, 299]);
+                if ($request->http_status == '4') $q->whereBetween('http_status', [400, 499]);
+                if ($request->http_status == '5') $q->whereBetween('http_status', [500, 599]);
+            })
+            ->when($request->filled('buscar'), function ($q) use ($request) {
+                $term = strtolower(trim($request->buscar));
+                $q->where(function ($sub) use ($term) {
+                    $sub->whereRaw('LOWER(request_body) LIKE ?', ["%{$term}%"])
+                        ->orWhereRaw('LOWER(response_body) LIKE ?', ["%{$term}%"])
+                        ->orWhereRaw('LOWER(endpoint) LIKE ?', ["%{$term}%"]);
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+    
+        return view('apilog.index', compact('logs', 'permisosDisponibles'));
     }
 
-   
+    
+    public function getRequestBody($uuid)
+    {
+        $log = ApiLog::where('uuid', $uuid)->firstOrFail();
+    
+        return response()->json([
+            'request_body' => $log->request_body,
+        ]);
+    }
+    
+    public function getResponseBody($uuid)
+    {
+        $log = ApiLog::where('uuid', $uuid)->firstOrFail();
+    
+        return response()->json([
+            'response_body' => $log->response_body,
+        ]);
+    }
+
+
+
+
+    public function fetch(Request $request)
+    {
+        $query = ApiLog::query();
+
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('endpoint', 'like', '%' . $request->search . '%')
+                    ->orWhere('api_key', 'like', '%' . $request->search . '%')
+                    ->orWhere('message', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('method')) {
+            $query->where('method', $request->method);
+        }
+
+        $logs = $query->orderByDesc('created_at')->limit(50)->get();
+
+        return response()->json($logs);
+    }
+
 
     public function destroy($id)
     {
