@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Helpers\Api\Helpers as ApiHelpers;
+use App\Http\Helpers\Api\Helpers;
 use Illuminate\Http\Request;
 use App\Models\Rcm;
 use App\Models\Depto;
@@ -98,7 +98,7 @@ class ApiRcmsController extends Controller
 
         $data = ['deptos' => $deptos];
         $message = ['success' => [__('Departamentos')]];
-        return ApiHelpers::success($data, $message);
+        return Helpers::success($data, $message);
     }
 
     public function obtenerMunicipiosRCM($id = null)
@@ -107,14 +107,14 @@ class ApiRcmsController extends Controller
 
         $data = ['municipios' => $municipios];
         $message =  ['success'=>[__('Municipios')]];
-        return ApiHelpers::success($data,$message);
+        return ::success($data,$message);
     }
 
     public function obtenerClasificacionRCM()
     {
         $query = Clasificacion::select('id', 'name')->orderBy('id', 'asc')->get();
 
-        return ApiHelpers::success(
+        return ::success(
             ['clasificaciones' => $query],
             ['success' => [__('Clasificaciones')]]
         );
