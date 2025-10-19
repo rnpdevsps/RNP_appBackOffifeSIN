@@ -677,20 +677,21 @@ class WSController extends Controller
         $fechan = $response->FechaDeNacimiento ?? null;
 
         $edadAnios = null;
-        $edadMesesTotales = null;
+        $edadMeses = null;
 
         if ($fechan) {
             $fechaNacimiento = Carbon::parse($fechan);
             $edadAnios = $fechaNacimiento->age; // años completos
-            $edadMesesTotales = $fechaNacimiento->diffInMonths(Carbon::now()); // meses totales
+            $edadMeses = intval($fechaNacimiento->diffInMonths(Carbon::now())); // meses totales como entero
         }
 
         return ApiHelpers::success([
             'InscripcionNacimiento' => $response,
             'Edad' => $edadAnios,
-            'EdadMeses' => $edadMesesTotales,
+            'EdadMeses' => $edadMeses,
             'FechaServidor' => Carbon::now()->format('d-m-Y')
         ], ['success' => ['Inscripción de Nacimiento']]);
+
 
     }
 
