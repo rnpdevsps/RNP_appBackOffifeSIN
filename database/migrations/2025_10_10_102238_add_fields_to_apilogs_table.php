@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('api_logs', function (Blueprint $table) {
+        /* Schema::table('api_logs', function (Blueprint $table) {
             // En Oracle, no uses NOT NULL sin default
             $table->char('uuid', 36)->nullable();
 
@@ -20,7 +20,7 @@ return new class extends Migration
 
             // Usa decimal en lugar de float para compatibilidad
             $table->decimal('execution_time_ms', 10, 3)->nullable();
-        });
+        }); */
     }
 
     /**
@@ -28,8 +28,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('api_logs', function (Blueprint $table) {
+        /* Schema::table('api_logs', function (Blueprint $table) {
             $table->dropColumn(['uuid', 'http_status', 'execution_time_ms']);
-        });
+        }); */
     }
 };
