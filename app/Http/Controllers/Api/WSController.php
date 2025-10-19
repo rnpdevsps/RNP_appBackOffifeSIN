@@ -675,13 +675,23 @@ class WSController extends Controller
         }
 
         $fechan = $response->FechaDeNacimiento ?? null;
-        $edad = $fechan ? Carbon::parse($fechan)->age : null;
+
+        $edadAnios = null;
+        $edadMesesTotales = null;
+
+        if ($fechan) {
+            $fechaNacimiento = Carbon::parse($fechan);
+            $edadAnios = $fechaNacimiento->age; // años completos
+            $edadMesesTotales = $fechaNacimiento->diffInMonths(Carbon::now()); // meses totales
+        }
 
         return ApiHelpers::success([
             'InscripcionNacimiento' => $response,
-            'Edad' => $edad,
+            'Edad' => $edadAnios,
+            'EdadMeses' => $edadMesesTotales,
             'FechaServidor' => Carbon::now()->format('d-m-Y')
         ], ['success' => ['Inscripción de Nacimiento']]);
+
     }
 
     public function obtenerValidacionDNI($id = null)
