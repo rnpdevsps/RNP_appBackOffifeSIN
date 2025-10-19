@@ -45,19 +45,8 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => public_path('storage/app'),
-            'url' => env('APP_URL') . '/storage/app',
-            'permissions' => [
-                'file' => [
-                    'public' => 0777,
-                    'private' => 0777,
-                ],
-                'dir' => [
-                    'public' => 0777,
-                    'private' => 0777,
-                ],
-            ],
-
+            'root' => storage_path('app'),
+            'url' => env('APP_URL').'storage/app',
         ],
 
         'public' => [
