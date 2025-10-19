@@ -1,0 +1,121 @@
+IP,Date,Time,Accepted cookies,Device type,Browser language,Browser name,OS Name,Country,Region,RegionName,City,Zipcode,Lat,Lon
+49.36.83.154,2023-07-11,13:00:43 UTC,"[""necessary""]",desktop,en,Chrome,Linux,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-07-11,13:07:09 UTC,["necessary"],desktop,en,Chrome,Linux,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-04,07:14:20 UTC,["necessary"],desktop,en,Chrome,Linux,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-04,07:22:07 UTC,["necessary"],desktop,en,Chrome,Linux,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-04,07:25:19 UTC,["necessary"],desktop,en,Chrome,Linux,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-04,07:25:50 UTC,["necessary"],desktop,en,Chrome,Linux,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-04,08:16:49 UTC,["necessary"],desktop,en,Chrome,Linux,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-04,08:17:18 UTC,["necessary"],desktop,en,Chrome,Linux,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-25,07:04:04 UTC,["necessary"],mobile,en,Chrome,iOS,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-25,07:14:48 UTC,["necessary"],desktop,en,Chrome,Linux,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-25,09:59:05 UTC,["necessary"],desktop,it,Chrome,Linux,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-25,13:00:23 UTC,["necessary"],mobile,bn,Chrome,Android,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-25,13:20:32 UTC,["necessary"],desktop,th,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-25,13:47:36 UTC,["necessary"],desktop,pt,Chrome,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-25,15:20:58 UTC,["necessary"],desktop,en,Chrome,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-25,17:04:35 UTC,["necessary"],desktop,fr,Firefox,Ubuntu,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-25,17:30:19 UTC,["necessary"],desktop,es,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-25,18:11:26 UTC,["necessary"],desktop,en,Chrome,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-25,19:56:05 UTC,["necessary"],desktop,en,Firefox,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-25,20:48:27 UTC,["necessary"],mobile,en,Chrome,Android,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-26,02:09:10 UTC,["necessary"],mobile,en,Chrome,Android,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-26,02:41:17 UTC,["necessary"],desktop,en,Edge,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-26,04:39:39 UTC,["necessary"],desktop,en,Chrome,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-26,04:52:36 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-26,05:31:33 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-26,09:05:52 UTC,["necessary"],mobile,en,Samsung Internet,Android,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-26,10:26:32 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-26,10:41:44 UTC,["necessary"],desktop,en,Firefox,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-26,13:27:57 UTC,["necessary"],desktop,fr,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-26,16:07:39 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-26,18:57:16 UTC,["necessary"],desktop,es,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-26,19:22:30 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-26,19:39:22 UTC,["necessary"],desktop,en,Chrome,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-27,02:42:05 UTC,["necessary"],desktop,es,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-27,04:12:16 UTC,["necessary"],desktop,es,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-27,09:45:20 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-27,10:57:41 UTC,["necessary"],desktop,en,Firefox,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-27,12:14:50 UTC,["necessary"],desktop,en,Firefox,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-27,12:17:03 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-27,14:09:19 UTC,["necessary"],mobile,en,Safari,iOS,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-27,14:28:49 UTC,["necessary"],desktop,cs,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-27,15:22:41 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-27,15:35:55 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-27,19:11:46 UTC,["necessary"],desktop,en,Chrome,Linux,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-27,19:27:38 UTC,["necessary"],mobile,en,Chrome,Android,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,02:20:34 UTC,["necessary"],desktop,en,Edge,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,02:35:06 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,04:00:40 UTC,["necessary"],mobile,en,Chrome,Android,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,04:11:13 UTC,["necessary"],desktop,en,Firefox,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,05:47:18 UTC,["necessary"],mobile,en,Chrome,Android,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,06:43:09 UTC,["necessary"],desktop,en,Chrome,Linux,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,06:44:51 UTC,["necessary"],desktop,en,Edge,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,07:14:28 UTC,["necessary"],desktop,en,Firefox,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,10:12:07 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,10:31:54 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,11:00:42 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,13:12:36 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,13:17:50 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,13:36:30 UTC,["necessary"],desktop,en,Chrome,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,13:53:23 UTC,["necessary"],desktop,pt,Chrome,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,16:17:23 UTC,["necessary"],desktop,en,Chrome,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,18:00:27 UTC,["necessary"],desktop,de,Firefox,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,18:12:33 UTC,["necessary"],mobile,en,Chrome,Android,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-28,23:00:00 UTC,["necessary"],mobile,pt,Chrome,iOS,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,01:05:12 UTC,["necessary"],desktop,pt,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,02:10:32 UTC,["necessary"],mobile,en,Chrome,Android,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,03:09:28 UTC,["necessary"],desktop,pt,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,03:19:01 UTC,["necessary"],mobile,pt,Chrome,Android,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,04:32:16 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,08:26:10 UTC,["necessary"],desktop,en,Firefox,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,10:12:23 UTC,["necessary"],desktop,en,Chrome,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,10:23:39 UTC,["necessary"],desktop,en,Chrome,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,10:24:29 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,11:32:16 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,12:52:32 UTC,["necessary"],mobile,en,Chrome,Android,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,13:17:15 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,14:20:46 UTC,["necessary"],desktop,it,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,15:07:57 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,16:07:50 UTC,["necessary"],desktop,bg,Chrome,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,18:40:31 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,19:06:29 UTC,["necessary"],desktop,pt,Opera,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,21:10:42 UTC,["necessary"],desktop,en,Chrome,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,22:28:06 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-29,23:12:43 UTC,["necessary"],desktop,en,Chrome,Linux,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,01:42:38 UTC,["necessary"],desktop,pt,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,01:55:18 UTC,["necessary"],desktop,zh,Firefox,Ubuntu,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,02:03:36 UTC,["necessary"],desktop,th,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,05:19:00 UTC,["necessary"],desktop,tr,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,08:40:43 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,09:08:46 UTC,["necessary"],desktop,en,Safari,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,11:15:12 UTC,["necessary"],desktop,en,Chrome,Linux,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,11:29:49 UTC,["necessary"],desktop,de,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,12:18:16 UTC,["necessary"],desktop,pt,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,14:42:44 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,14:55:07 UTC,["necessary"],desktop,en,Safari,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,15:13:21 UTC,["necessary"],mobile,en,Chrome,Android,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,17:00:11 UTC,["necessary"],desktop,en,Chrome,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,18:16:05 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,19:38:10 UTC,["necessary"],desktop,en,Chrome,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,20:24:40 UTC,["necessary"],desktop,pt,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,22:10:23 UTC,["necessary"],desktop,es,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-30,22:32:23 UTC,["necessary"],mobile,fr,Chrome,Android,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-31,01:53:02 UTC,["necessary"],mobile,en,Chrome,iOS,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-31,06:10:24 UTC,["necessary"],desktop,en,Firefox,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-31,06:28:27 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-31,09:30:28 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-31,10:43:51 UTC,["necessary"],desktop,tr,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-31,15:13:53 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-31,19:37:46 UTC,["necessary"],desktop,en,Chrome,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-31,20:08:39 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-08-31,23:36:09 UTC,["necessary"],desktop,fr,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-09-01,02:46:59 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-09-01,03:03:46 UTC,["necessary"],mobile,tr,Opera Mobile,Android,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-09-01,03:46:03 UTC,["necessary"],desktop,en,Edge,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-09-01,05:01:18 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-09-01,06:02:16 UTC,["necessary"],desktop,en,Chrome,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-09-01,06:52:24 UTC,["necessary"],mobile,en,Safari,iOS,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-09-01,07:02:32 UTC,["necessary"],desktop,hu,Chrome,OS X,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-09-01,07:54:57 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
+49.36.83.154,2023-09-01,09:15:00 UTC,["necessary"],desktop,en,Chrome,Windows,India,GJ,Gujarat,Surat,395007,21.1888,72.8293
