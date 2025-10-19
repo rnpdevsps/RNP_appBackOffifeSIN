@@ -54,9 +54,9 @@ return [
     |
     */
 
-    'url' => "https://app.rnp.hn",
+    'url' => env('APP_URL', 'http://localhost'),
 
-    'asset_url' => "https://app.rnp.hn",
+    'asset_url' => env('ASSET_URL', null),
 
     /*
     |--------------------------------------------------------------------------
