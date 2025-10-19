@@ -133,11 +133,20 @@ class ApiRcmsController extends Controller
 
     public function obtenerValorParametro($id = null)
     {
-        $parametro = Parametros::select('id', 'nombre', 'valor')->where('nombre', $id)->first();
+        $parametro = Parametros::select('id', 'nombre', 'valor')
+            ->where('nombre', $id)
+            ->first();
 
-        $data = ['parametro' => $parametro];
-        $message =  ['success'=>[__('Parametro')]];
-        return ApiHelpers::success($data,$message);
+        if ($parametro) {
+            $data = ['parametro' => $parametro];
+            $message = ['success' => [__('Parametro encontrado')]];
+            return ApiHelpers::success($data, $message);
+        } else {
+            $data = ['parametro' => null];
+            $message = ['error' => [__('El parámetro no existe')]];
+            return ApiHelpers::error($data, $message);
+        }
     }
+
 
 }
