@@ -59,6 +59,7 @@ use App\Http\Controllers\ApiKeyController;
 
 use App\Http\Controllers\Api\WSController;
 use App\Http\Controllers\RcmsController;
+use App\Http\Controllers\ParametrosController;
 
 
 // use Omniphx\Forrest\Providers\Laravel\Facades\Forrest;
@@ -90,6 +91,7 @@ Route::group(['middleware' => ['auth', 'xss', 'Setting', 'verified', '2fa', 'ver
     Route::post('apikey/status/{id}', [ApiKeyController::class, 'apikeyStatus'])->name('apikey.status');
     
     Route::resource('apilog', ApiLogController::class)->except(['show']);
+    Route::resource('parametros', ParametrosController::class)->except(['show']);
 
     //para RCM
     Route::get('obtenerMunicipiosPorDeptos/{id}', '\App\Http\Controllers\SearchController@obtenerMunicipiosPorDeptos');

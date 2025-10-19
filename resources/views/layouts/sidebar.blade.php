@@ -113,6 +113,12 @@
                                 class="dash-mtext">{{ __('Account Setting') }}</span><span class="dash-arrow"><i
                                     data-feather="chevron-right"></i></span></a>
                         <ul class="dash-submenu">
+                            @can('manage-parametros')
+                                <li class="dash-item {{ request()->is('parametros*') ? 'active' : '' }}">
+                                    <a class="dash-link"
+                                        href="{{ route('parametros.index') }}">{{ __('Parametros') }}</a>
+                                </li>
+                            @endcan
                             @can('manage-apikey')
                                 <li class="dash-item {{ request()->is('apikey*') ? 'active' : '' }}">
                                     <a class="dash-link"
