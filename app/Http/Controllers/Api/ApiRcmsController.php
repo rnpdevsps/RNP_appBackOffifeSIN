@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Helpers\Api\Helpers;
+use App\Http\Helpers\Api\Helpers as ApiHelpers;
 use Illuminate\Http\Request;
 use App\Models\Rcm;
 use App\Models\Depto;
 use App\Models\Municipio;
 use App\Models\Clasificacion;
+use App\Models\Parametros;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -98,7 +99,7 @@ class ApiRcmsController extends Controller
 
         $data = ['deptos' => $deptos];
         $message = ['success' => [__('Departamentos')]];
-        return Helpers::success($data, $message);
+        return ApiHelpers::success($data, $message);
     }
 
     public function obtenerMunicipiosRCM($id = null)
@@ -107,17 +108,36 @@ class ApiRcmsController extends Controller
 
         $data = ['municipios' => $municipios];
         $message =  ['success'=>[__('Municipios')]];
-        return ::success($data,$message);
+        return ApiHelpers::success($data,$message);
     }
 
     public function obtenerClasificacionRCM()
     {
         $query = Clasificacion::select('id', 'name')->orderBy('id', 'asc')->get();
 
-        return ::success(
+        return ApiHelpers::success(
             ['clasificaciones' => $query],
             ['success' => [__('Clasificaciones')]]
         );
+    }
+
+    public function obtenerParametros()
+    {
+        $query = Parametros::select('id', 'nombre', 'valor')->orderBy('id', 'asc')->get();
+
+        return ApiHelpers::success(
+            ['parametros' => $query],
+            ['success' => [__('Parámetros')]]
+        );
+    }
+
+    public function obtenerValorParametro($id = null)
+    {
+        $parametro = Parametros::select('id', 'nombre', 'valor')->where('nombre', $id)->first();
+
+        $data = ['parametro' => $parametro];
+        $message =  ['success'=>[__('Parametro')]];
+        return ApiHelpers::success($data,$message);
     }
 
 }

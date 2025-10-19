@@ -29,6 +29,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware([ValidateApiKey::class])->group(function () {
 
+    Route::get('obtenerParametros', [ApiRcmsController::class, 'obtenerParametros'])->name('obtenerParametros');
+    Route::get('obtenerValorParametro/{id}', [ApiRcmsController::class, 'obtenerValorParametro'])->name('obtenerValorParametro');
+
     Route::get('obtenerListaRCM', [ApiRcmsController::class, 'obtenerListaRCM'])->name('obtenerListaRCM');
     Route::get('obtenerDeptosRCM', [ApiRcmsController::class, 'obtenerDeptosRCM'])->name('obtenerDeptosRCM');
     Route::get('obtenerMunicipiosRCM/{id}', [ApiRcmsController::class, 'obtenerMunicipiosRCM'])->name('obtenerMunicipiosRCM');

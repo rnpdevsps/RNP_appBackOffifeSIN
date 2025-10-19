@@ -30,19 +30,25 @@ return [
     |    The environment variables to set while running the wkhtmltopdf process.
     |
     */
+    // 'pdf' => [  para windows
+    //     'enabled' => true,
+    //     'binary'  => env('WKHTML_PDF_BINARY', '/usr/bin/wkhtmltopdf'),
+    //     'timeout' => false,
+    //     'temporary_folder' => 'C:\php-8.2.27-Win32-vs16-x64\temp',
+    //     'options' => [
+    //         'no-stop-slow-scripts' => true,
+    //         'disable-smart-shrinking' => true,
+    //         'enable-local-file-access' => true, // muy importante
+    //         'load-error-handling' => 'ignore',
+    //         'load-media-error-handling' => 'ignore',
+    //     ],
+    //     'env'     => [],
+    // ],
     'pdf' => [
         'enabled' => true,
-        'binary'  => env('WKHTML_PDF_BINARY', '/usr/bin/wkhtmltopdf'),
+        'binary'  => '/usr/bin/wkhtmltopdf', // ✅ CORRECTO PARA LINUX
         'timeout' => false,
-        'temporary_folder' => 'C:\php-8.2.27-Win32-vs16-x64\temp',
-        'options' => [
-            'no-stop-slow-scripts' => true,
-            'disable-smart-shrinking' => true,
-            'enable-local-file-access' => true, // muy importante
-            'load-error-handling' => 'ignore',
-            'load-media-error-handling' => 'ignore',
-        ],
-        'env'     => [],
+        'options' => [],
     ],
     'image' => [
         'enabled' => true,
